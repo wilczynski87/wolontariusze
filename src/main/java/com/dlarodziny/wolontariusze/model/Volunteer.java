@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.Collections;
+
 @Table("VOLUNTEER")
 @Data
 @AllArgsConstructor
@@ -17,4 +19,9 @@ public class Volunteer {
     private String password;
     private String role;
     private boolean active;
+
+    public AuthenticatedUser toAuthUser() {
+         return new AuthenticatedUser(this.username, this.password);
+    }
+
 }

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Volunteer (
     PRIMARY KEY (id)
     );
 
-CREATE TABLE IF NOT EXISTS Contacts (
+CREATE TABLE IF NOT EXISTS Contact (
     id SERIAL NOT NULL,
     contact_name VARCHAR(255),
     phone VARCHAR(255),
@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS Contacts (
     last_contact DATE,
     attitude INTEGER,
     comment VARCHAR(255),
-    patron VARCHAR(255),
+    patron INTEGER,
     PRIMARY KEY (id)
     );

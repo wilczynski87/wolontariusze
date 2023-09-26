@@ -8,5 +8,27 @@
 <body>
     <h1>Greate Succes!</h1>
     <h2 th:text="${volunteer}">Greetings!</h2>
+    <table id="actionTable" class="table table-bordered" style="width: 100%">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>phone</th>
+            <th>email</th>
+            <th>lastContact</th>
+            <th>attitude</th>
+            <th>comment</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact : ${contacts}">
+            <td th:text="${contact.contactName}">Name</td>
+            <td th:text="${contact.phone}">Position</td>
+            <td th:text="${contact.email}">Office</td>
+            <td th:text="${#dates.format(contact.lastContact, 'dd.MM.yyyy')}">Start date</td>
+            <td th:text="${contact.attitude}">Office</td>
+            <td th:text="${contact.comment}">Office</td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

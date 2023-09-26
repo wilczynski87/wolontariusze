@@ -8,6 +8,32 @@
 <body>
 <h1>Hello</h1>
     <div th:text="${volunteer}"> hello</div>
+<div class = "container">
+    <div class = "row">
+        <table class = "table table-responsive table-bordered table-striped">
+            <thead>
+            <tr>
+                <th> Imie i Nazwisko</th>
+                <th> Telefon</th>
+                <th> Email</th>
+                <th> Ostatni kontakt</th>
+                <th> Nastawienie</th>
+                <th> Komentarz</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contact : ${contacts}">
+                <td th:text="${contact.contactName}"></td>
+                <td th:text="${contact.phone}"></td>
+                <td th:text="${contact.email}"></td>
+                <td th:text="${contact.lastContact}"></td>
+                <td th:text="${contact.attitude}"></td>
+                <td th:text="${contact.comment}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>

@@ -2,16 +2,18 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="shortcut icon" href="#" />
     <!--Bootstrap CSS-->
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
     <!--Bootstrap JS-->
-    <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.min.js}"></script>
+<!--    <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.min.js}" defer></script>-->
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
     <!--HTMX-->
     <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
-
+    <script type="text/javascript" th:src="@{/scripts.js}" defer></script>
 </head>
 <body>
 <div class = "container">

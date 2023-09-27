@@ -3,59 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Dodaj komentarz</title>
+<!--    <script type="text/javascript" th:src="@{/scripts.js}" defer></script>-->
 </head>
 <body>
 
-<div th:fragment="commentForm" class="card container px-5 my-5">
-    <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-        <br>
-        <div class="input-group">
-            <div class="form-floating mb-3">
-                <input class="form-control" id="name" type="text" placeholder="name" data-sb-validations="required" />
-                <label for="emailAddress">Imię i Nazwisko / nazwa</label>
-                <div class="invalid-feedback" data-sb-feedback="name:required">Imię i Nazwisko / nazwa jest wymagane</div>
+    <div th:fragment="commentForm" class="card container px-5 my-5">
+        <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+            <br>
+            <div class="input-group">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="name" type="text" placeholder="name" data-sb-validations="required" />
+                    <label for="emailAddress">Imię i Nazwisko / nazwa</label>
+                    <div class="invalid-feedback" data-sb-feedback="name:required">Imię i Nazwisko / nazwa jest wymagane</div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="phone" name="phone" type="text" placeholder="phone" />
+                    <label for="phone">telefon</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="emailAddress" type="email" name="email" placeholder="Email Address" data-sb-validations="required,email" />
+                    <label for="emailAddress">Email Address</label>
+                    <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email Address is required.</div>
+                    <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email Address Email is not valid.</div>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="lastContact" name="lastContact" type="text" placeholder="Ostatni kontakt:" />
+                    <label for="lastContact">Ostatni kontakt:</label>
+                </div>
+                <div class="card mb-3">
+                    <label for="attitude" class="form-label">Nastawienie:<span id="attitudeOutput" >nastawienie?</span></label>
+                    <input type="range" class="form-range" id="attitude" name="attitude" min="0" max="4" oninput="sliderValue()">
+                </div>
             </div>
             <div class="form-floating mb-3">
-                <input class="form-control" id="phone" name="phone" type="text" placeholder="phone" />
-                <label for="phone">telefon</label>
+                <textarea class="form-control" id="comment" name="comment" type="text" placeholder="Komentarz" style="height: 10rem;"></textarea>
+                <label for="comment">Komentarz</label>
             </div>
-            <div class="form-floating mb-3">
-                <input class="form-control" id="emailAddress" type="email" name="email" placeholder="Email Address" data-sb-validations="required,email" />
-                <label for="emailAddress">Email Address</label>
-                <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email Address is required.</div>
-                <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email Address Email is not valid.</div>
+            <div class="d-none" id="submitSuccessMessage">
+                <div class="text-center mb-3">
+                    <div class="fw-bolder">Form submission successful!</div>
+                    <p>To activate this form, sign up at</p>
+                    <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                </div>
             </div>
-        </div>
-        <div class="input-group">
-            <div class="form-floating mb-3">
-                <input class="form-control" id="lastContact" name="lastContact" type="text" placeholder="Ostatni kontakt:" />
-                <label for="lastContact">Ostatni kontakt:</label>
+            <div class="d-none" id="submitErrorMessage">
+                <div class="text-center text-danger mb-3">Error sending message!</div>
             </div>
-            <div class="card mb-3">
-                <label for="attitude" class="form-label">Nastawienie:</label>
-                <input type="range" class="form-range" id="attitude" name="attitude" min="0" max="4">
+            <div class="d-grid">
+                <button class="btn btn-primary btn-lg" id="submitButton" name="submit" type="submit">Submit</button>
             </div>
-        </div>
-        <div class="form-floating mb-3">
-            <textarea class="form-control" id="comment" name="comment" type="text" placeholder="Komentarz" style="height: 10rem;"></textarea>
-            <label for="comment">Komentarz</label>
-        </div>
-        <div class="d-none" id="submitSuccessMessage">
-            <div class="text-center mb-3">
-                <div class="fw-bolder">Form submission successful!</div>
-                <p>To activate this form, sign up at</p>
-                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-            </div>
-        </div>
-        <div class="d-none" id="submitErrorMessage">
-            <div class="text-center text-danger mb-3">Error sending message!</div>
-        </div>
-        <div class="d-grid">
-            <button class="btn btn-primary btn-lg" id="submitButton" name="submit" type="submit">Submit</button>
-        </div>
-        <br>
-    </form>
-</div>
-
+            <br>
+        </form>
+        <script type="text/javascript" th:inline="javascript">
+        </script>
+    </div>
 </body>
 </html>

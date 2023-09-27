@@ -24,24 +24,27 @@ public class LoginController {
         this.volunteerDetailsService = volunteerDetailsService;
     }
 
-//    @GetMapping("/")
-//    public String index() {
-//        return "login";
-//    }
-
     @GetMapping("/")
-    public Mono<Rendering> list(final Model model, final WebSession session, Authentication authentication) {
-        System.out.println(authentication);
+    public Mono<Rendering> index(final Model model, final WebSession session) {
+//        return "login";
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("login")
+                        .build());
+    }
+
+    @GetMapping("/admin")
+    public Mono<Rendering> list(final Model model, final WebSession session, Authentication authentication) {
+//        System.out.println(authentication);
+        return setRedirectAttributes(model, session)
+                .thenReturn(Rendering.view("adminBoard")
                         .modelAttribute("volunteer", authentication.getName())
                         .build());
     }
 //    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/board")
+    @GetMapping("/user")
     public Mono<Rendering> volunteerDashboard(final Model model, final WebSession session, Authentication authentication) {
         return setRedirectAttributes(model, session)
-                .thenReturn(Rendering.view("volunteerDashboard")
+                .thenReturn(Rendering.view("user")
                         .modelAttribute("user", authentication.getName())
                         .modelAttribute("volunteer", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()))
                         .modelAttribute("contacts", contactService.getAllContactsByUserName(authentication.getName()))

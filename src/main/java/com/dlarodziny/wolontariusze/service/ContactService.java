@@ -31,21 +31,7 @@ public class ContactService {
     public Flux<Contact> getAllContactsByUserId(Long id) {
         return contactRepo.findAllByPatron(id);
     }
-//    public Flux<Contact> getAllContactsByUserName(String username) {
-//        var volunteer = volunteerRepo.findByUsername(username).map(Volunteer::getId);
-//        System.out.println(volunteer.block());
-//        AtomicReference<Flux<Contact>> result = new AtomicReference<>();
-//        volunteer.doOnNext(x -> result.set(contactRepo.findAllByPatron(x)));
-////        volunteer.subscribe(x -> result.set(contactRepo.findAllByPatron(x)));
-//        System.out.println(result);
-//
-//        return result.get();
-//    }
-
-    public Mono<List<Contact>> getAllContactsByUserName(String username) {
-        var result = contactRepo.findContactByPatronUsername(username);
-        result.subscribe(x -> System.out.println(x));
-//        System.out.println(result);
-        return contactRepo.findContactByPatronUsername(username).collectList();
+    public Flux<Contact> getAllContactsByUserName(String username) {
+        return contactRepo.findContactByPatronUsername(username);
     }
 }

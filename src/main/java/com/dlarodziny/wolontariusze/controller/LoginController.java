@@ -1,10 +1,9 @@
 package com.dlarodziny.wolontariusze.controller;
 
 import com.dlarodziny.wolontariusze.service.ContactService;
+import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +16,12 @@ public class LoginController {
 
     private final VolunteerService volunteerService;
     private final ContactService contactService;
+    private final VolunteerDetailsService volunteerDetailsService;
 
-    public LoginController(VolunteerService volunteerService, ContactService contactService) {
+    public LoginController(VolunteerService volunteerService, ContactService contactService, VolunteerDetailsService volunteerDetailsService) {
         this.volunteerService = volunteerService;
         this.contactService = contactService;
+        this.volunteerDetailsService = volunteerDetailsService;
     }
 
 //    @GetMapping("/")
@@ -36,12 +37,13 @@ public class LoginController {
                         .modelAttribute("volunteer", authentication.getName())
                         .build());
     }
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     @GetMapping("/board")
     public Mono<Rendering> volunteerDashboard(final Model model, final WebSession session, Authentication authentication) {
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("volunteerDashboard")
-                        .modelAttribute("volunteer", authentication.getName())
+                        .modelAttribute("user", authentication.getName())
+                        .modelAttribute("volunteer", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()))
                         .modelAttribute("contacts", contactService.getAllContactsByUserName(authentication.getName()))
                         .build());
     }

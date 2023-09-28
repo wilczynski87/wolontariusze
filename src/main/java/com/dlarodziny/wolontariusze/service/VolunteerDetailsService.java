@@ -18,7 +18,6 @@ public class VolunteerDetailsService {
     }
     public Mono<VolunteerDetails> getVolunteerDetailsByUsername(String username) {
         return volunteerDetailsRepo.getVolunteerDetailsByUsername(username)
-                .doOnEach(x -> System.out.println("dupa"))
                 ;
     }
     public Mono<VolunteerDetails> addVolunteerDetails(Long patron, VolunteerDetails volunteerDetails) {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabela kontaktów</title>
+</head>
+<body>
+
+    <div class="row" id="contactTable" th:fragment="contactTable">
+        <table class = "table table-responsive table-bordered table-striped">
+            <thead>
+            <tr>
+                <th> Imie i Nazwisko</th>
+                <th> Telefon</th>
+                <th> Email</th>
+                <th> Ostatni kontakt</th>
+                <th> Nastawienie</th>
+                <th> Komentarz</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contact : ${contacts}">
+                <td th:text="${contact.contactName}"></td>
+                <td th:text="${contact.phone}"></td>
+                <td th:text="${contact.email}"></td>
+                <td th:text="${contact.lastContact}"></td>
+                <td th:text="${contact.attitude}"></td>
+                <td th:text="${contact.comment}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

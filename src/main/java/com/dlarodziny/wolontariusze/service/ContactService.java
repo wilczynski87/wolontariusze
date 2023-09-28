@@ -1,5 +1,6 @@
 package com.dlarodziny.wolontariusze.service;
 
+import com.dlarodziny.wolontariusze.model.Attitude;
 import com.dlarodziny.wolontariusze.model.Contact;
 import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.repository.ContactRepo;

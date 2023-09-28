@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="#" />
     <!--Bootstrap CSS-->
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+    <link th:rel="stylesheet" th:href="@{/styles.css}" />
     <!--Bootstrap JS-->
 <!--    <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.min.js}" defer></script>-->
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
@@ -18,7 +19,7 @@
 <body>
 <div class = "container">
     <h1>Hello</h1>
-    <div th:unless="${volunteer}" class="row">
+    <div th:unless="${volunteer}" class="row" id="greeter">
         <h2>Cześć <span th:text="*{user}" /></h2>
         <p>Proszę uzupełnij swoje detale</p>
     </div>
@@ -26,31 +27,26 @@
         <h2>Cześć <span th:text="*{name}" /></h2>
         <p>Dziekujemy że z nami jesteś już od <span th:text="*{lasting()}"></span></p>
     </div>
-    <th:block th:replace="~{fragments/commentForm :: commentForm}"></th:block>
-    <div class = "row">
-        <table class = "table table-responsive table-bordered table-striped">
-            <thead>
-            <tr>
-                <th> Imie i Nazwisko</th>
-                <th> Telefon</th>
-                <th> Email</th>
-                <th> Ostatni kontakt</th>
-                <th> Nastawienie</th>
-                <th> Komentarz</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="contact : ${contacts}">
-                <td th:text="${contact.contactName}"></td>
-                <td th:text="${contact.phone}"></td>
-                <td th:text="${contact.email}"></td>
-                <td th:text="${contact.lastContact}"></td>
-                <td th:text="${contact.attitude}"></td>
-                <td th:text="${contact.comment}"></td>
-            </tr>
-            </tbody>
-        </table>
+
+    <!--Menu-->
+    <th:block th:insert="~{fragments/userMenu :: navBar}" />
+
+    <!--Contact form-->
+    <div hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">
+        <div class="text-center spiner">
+            <strong>Ładuje formularz do kontaktów...</strong>
+            <div class="spinner-border" role="status" aria-hidden="true"></div>
+        </div>
     </div>
+
+    <!--table with contacts-->
+    <div id="contactTable" hx-get="/contactTable" hx-trigger="load" hx-swap="outerHTML">
+        <div class="text-center spiner">
+            <strong>Ładuje tabelę kontaktów...</strong>
+            <div class="spinner-border" role="status" aria-hidden="true"></div>
+        </div>
+    </div>
+
 </div>
 
 </body>

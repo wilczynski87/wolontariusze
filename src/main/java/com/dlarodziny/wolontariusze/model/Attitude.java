@@ -6,9 +6,13 @@ public enum Attitude {
     CIEPLY("Ciepły"),
     GORACY("Gorący");
 
-    private final String name;
+    private final String attitude;
 
-    Attitude(String name) {
-        this.name = name;
+    Attitude(String attitude) {
+        this.attitude = attitude;
+    }
+
+    public String getAttitude() {
+        return this.attitude;
     }
 }

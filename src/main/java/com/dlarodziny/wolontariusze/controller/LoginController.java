@@ -1,15 +1,19 @@
 package com.dlarodziny.wolontariusze.controller;
 
+import com.dlarodziny.wolontariusze.model.Attitude;
 import com.dlarodziny.wolontariusze.service.ContactService;
 import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.result.view.Rendering;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 @Controller
 public class LoginController {
@@ -25,10 +29,17 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public Mono<Rendering> index(final Model model, final WebSession session) {
-//        return "login";
-        return setRedirectAttributes(model, session)
-                .thenReturn(Rendering.view("login")
+    public Mono<Rendering> index(final Model model, final WebSession session, Authentication authentication) {
+
+        return authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+                ? setRedirectAttributes(model, session)
+                    .thenReturn(Rendering.view("admin")
+                        .modelAttribute("volunteer", authentication.getName())
+                        .build())
+                : setRedirectAttributes(model, session)
+                    .thenReturn(Rendering.view("user")
+                        .modelAttribute("user", authentication.getName())
+                        .modelAttribute("volunteer", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()))
                         .build());
     }
 
@@ -36,7 +47,7 @@ public class LoginController {
     public Mono<Rendering> list(final Model model, final WebSession session, Authentication authentication) {
 //        System.out.println(authentication);
         return setRedirectAttributes(model, session)
-                .thenReturn(Rendering.view("adminBoard")
+                .thenReturn(Rendering.view("admin")
                         .modelAttribute("volunteer", authentication.getName())
                         .build());
     }
@@ -50,11 +61,6 @@ public class LoginController {
                         .modelAttribute("contacts", contactService.getAllContactsByUserName(authentication.getName()))
                         .build());
     }
-
-//    @GetMapping("/getAllUsers")
-//    public Flux<Volunteer> getAllUsers(final Model model, final WebSession session) {
-//        return volunteerService.getAllVlounteers();
-//    }
 
     private Mono<Void> setRedirectAttributes(final Model model, final WebSession session) {
         return Mono.fromRunnable(

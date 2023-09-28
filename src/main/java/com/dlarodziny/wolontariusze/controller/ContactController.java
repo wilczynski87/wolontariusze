@@ -8,9 +8,11 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class ContactController {
+    private final ContactViewController contactViewController;
     private final ContactService contactService;
 
-    public ContactController(ContactService contactService) {
+    public ContactController(LoginController loginController, ContactViewController contactViewController, ContactService contactService) {
+        this.contactViewController = contactViewController;
         this.contactService = contactService;
     }
 
@@ -29,6 +31,11 @@ public class ContactController {
     public Flux<Contact> getAllContactsByUserId(@RequestParam Long id) {
         return contactService.getAllContactsByUserId(id);
     }
+//    @PostMapping("/contactTable")
+//    public Mono<Void> addToContactTable(Contact contact) {
+//        System.out.println(contact);
+//        return null;
+//    }
 
 //    @PatchMapping("/updateContact")
 }

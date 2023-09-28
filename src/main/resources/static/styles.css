@@ -1,0 +1,6 @@
+.htmx-settling #commentForm {
+    opacity: 0;
+}
+#commentForm {
+    transition: opacity 300ms ease-in;
+}

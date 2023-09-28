@@ -1,13 +1,10 @@
 
-
-
-// console.log(slider)
-// console.log(sliderOutput)
-// console.log(slider.value)
-
-const sliderValue = (e) => {
-    console.log(e)
+const sliderValue = () => {
     const slider = document.getElementById("attitude");
     const sliderOutput = document.getElementById("attitudeOutput");
-    sliderOutput.innerHTML = slider.value;
+
+    sliderOutput.innerHTML = attitudeDisplayer(slider.value);
+}
+const attitudeDisplayer = (val) => {
+    return attitudes[val];
 }

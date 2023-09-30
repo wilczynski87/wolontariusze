@@ -15,11 +15,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class ContactService {
     private final ContactRepo contactRepo;
-    private final VolunteerRepo volunteerRepo;
 
     public ContactService(ContactRepo contactRepo, VolunteerRepo volunteerRepo) {
         this.contactRepo = contactRepo;
-        this.volunteerRepo = volunteerRepo;
     }
 
     public Flux<Contact> getAllContacts() {

@@ -24,7 +24,7 @@
                 <td th:text="${contact.phone}"></td>
                 <td th:text="${contact.email}"></td>
                 <td th:text="${contact.lastContact}"></td>
-                <td th:text="${contact.attitude}"></td>
+                <td th:text="${T(com.dlarodziny.wolontariusze.model.Attitude).values()[contact.attitude].getAttitude()}"></td>
                 <td th:text="${contact.comment}"></td>
             </tr>
             </tbody>

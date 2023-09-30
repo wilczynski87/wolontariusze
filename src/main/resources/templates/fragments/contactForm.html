@@ -13,14 +13,16 @@
             <br>
             <div class="row">
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="contactName" type="text" placeholder="name" data-sb-validations="required" />
+                    <input class="form-control" id="contactName" name="contactName" type="text" placeholder="name" data-sb-validations="required" />
                     <label for="contactName">Imię i Nazwisko / nazwa</label>
-                    <div class="invalid-feedback" data-sb-feedback="name:required">Imię i Nazwisko / nazwa jest wymagane</div>
+                    <div class="invalid-feedback" data-sb-feedback="contactName:required">Imię i Nazwisko / nazwa jest wymagane</div>
                 </div>
 
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="phone" name="phone" type="text" placeholder="phone" />
-                    <label for="phone">telefon</label>
+                    <input class="form-control" id="phone" name="phone" type="tel" placeholder="+48 123 456 789"
+                           required pattern="[+][0-9]{2} [0-9]{3} [0-9]{3} [0-9]{3}"
+                           oninput="phoneValidator()" />
+                    <label for="phone">+48 123 456 789</label>
                 </div>
 
                 <div class="form-floating mb-3 col-lg">
@@ -33,7 +35,7 @@
 
             <div class="row">
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="lastContact" name="lastContact" type="text" placeholder="Ostatni kontakt:" />
+                    <input class="form-control" id="lastContact" name="lastContact" type="date" placeholder="Ostatni kontakt:" />
                     <label for="lastContact">Ostatni kontakt:</label>
                 </div>
 
@@ -71,9 +73,6 @@
             </div>
 
         </form>
-        <script type="text/javascript" th:inline="javascript">
-            const attitudes = /*[[${attitudes}]]*/ [];
-        </script>
     </div>
 </body>
 </html>

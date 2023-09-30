@@ -28,6 +28,9 @@ CREATE TABLE IF NOT EXISTS volunteerdetails (
     dob DATE,
     started DATE,
     ended DATE,
-    lastActivity DATE,
+    last_activity DATE,
+    phone VARCHAR(255),
+    email VARCHAR(255),
+    address VARCHAR(255),
     PRIMARY KEY (id)
     );

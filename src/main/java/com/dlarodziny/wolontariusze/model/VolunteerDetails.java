@@ -23,8 +23,15 @@ public class VolunteerDetails {
     private LocalDate started;
     private LocalDate ended;
     private LocalDate lastActivity;
+    private String phone;
+    private String email;
+    private String address;
 
     public String lasting() {
         return Period.between(this.started, LocalDate.now()).toString();
     }
+
+    public VolunteerDetails(Long patron) {
+        this.patron = patron;
+    };
 }

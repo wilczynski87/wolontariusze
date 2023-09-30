@@ -3,6 +3,8 @@ package com.dlarodziny.wolontariusze.controller;
 import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.repository.VolunteerRepo;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,8 +39,17 @@ public class UserController {
     }
 
     @PatchMapping("/updateUser")
-    public Mono<Volunteer> updateUser(@RequestBody Volunteer volunteer) {
-        return volunteerService.updateVolunteer(volunteer);
+    public void updateUser(Volunteer volunteer, final Authentication authentication) {
+        var oldVolunteer = volunteerService.getVolunteerByUsername(authentication.getName());
+        oldVolunteer.map(user -> {
+                volunteer.setId(user.getId());
+                volunteer.setRole(user.getRole());
+                volunteer.setActive(user.isActive());
+                return volunteer;
+            })
+            .flatMap(volunteerService::updateVolunteer).subscribe();
     }
+
+
 
 }

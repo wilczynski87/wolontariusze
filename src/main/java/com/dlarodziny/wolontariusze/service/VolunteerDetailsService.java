@@ -24,4 +24,17 @@ public class VolunteerDetailsService {
         volunteerDetails.setPatron(patron);
         return volunteerDetailsRepo.save(volunteerDetails);
     }
+    public Mono<VolunteerDetails> updateVolunteerDetails(VolunteerDetails volunteerDetails, Long id) {
+        return volunteerDetailsRepo.getVolunteerDetailsByPatron(id)
+                .defaultIfEmpty(new VolunteerDetails(id))
+                .map(old -> {
+                    volunteerDetails.setId(old.getId());
+                    volunteerDetails.setPatron(old.getPatron());
+                    volunteerDetails.setStarted(old.getStarted());
+                    // volunteerDetails.setLastActivity(old.getLastActivity());
+                    // volunteerDetails.setEnded(old.getEnded());
+                    return volunteerDetails;
+                })
+                .flatMap(volunteerDetailsRepo::save);
+    }
 }

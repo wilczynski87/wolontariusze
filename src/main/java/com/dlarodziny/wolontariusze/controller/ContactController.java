@@ -23,7 +23,6 @@ public class ContactController {
 
     @PostMapping("/addContact")
     public Mono<Contact> addContact(@RequestBody Contact contact) {
-        System.out.println(contact);
         return contactService.addContact(contact);
     }
 

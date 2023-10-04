@@ -35,11 +35,11 @@ public class LoginController {
 
     @GetMapping("/")
     public Mono<Rendering> index(final Model model, final WebSession session, Authentication authentication) {
-
         return authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
                 ? setRedirectAttributes(model, session)
                     .thenReturn(Rendering.view("admin")
                         .modelAttribute("user", authentication.getName())
+                        .modelAttribute("admin", true)
                         .modelAttribute("volunteer", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()))
                         .modelAttribute("volunteers", volunteerService.getAllVlounteers())
                         .modelAttribute("volunteersDetails", volunteerDetailsService.getAllVolunteerDetails())

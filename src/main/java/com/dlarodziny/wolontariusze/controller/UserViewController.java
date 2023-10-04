@@ -1,12 +1,17 @@
 package com.dlarodziny.wolontariusze.controller;
 
+import com.dlarodziny.wolontariusze.model.Volunteer;
+import com.dlarodziny.wolontariusze.model.VolunteerDetails;
 import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
@@ -42,28 +47,14 @@ public class UserViewController {
                         .build());
     }
 
-
-    //    @GetMapping("/userDataForm")
-//    public Mono<String> userDataForm() {
-//        return Mono.just("redirect:/userDataForm");
-//    }
-//    @GetMapping("userDataForm")
-//    public Mono<ResponseEntity<String>> hiRedirectRespEntity() {
-//        return Mono.just(new HttpHeaders())
-//                .doOnNext(header -> header.add("Location", "/userDataForm"))
-//                .map(header -> new ResponseEntity<>(null, header, HttpStatus.MOVED_PERMANENTLY));
-//    }
-//    @GetMapping("/userDataForm")
-//    public String index(final Model model, final Authentication authentication) {
-//        System.out.println(authentication);
-//        // data streaming, data driven mode.
-////        IReactiveDataDriverContextVariable reactiveDataDrivenMode =
-////                new ReactiveDataDriverContextVariable(movieRepository.findAll(), 1);
-//
-////        model.addAttribute("movies", reactiveDataDrivenMode);
-//
-//        return "userDataForm";
-//    }
+    @GetMapping("/volunteerDataForm/{volunteerId}")
+    public Mono<Rendering> volunteerDataForm(final Model model, final WebSession session, Authentication authentication, @PathVariable Long volunteerId) {
+        return setRedirectAttributes(model, session)
+                .thenReturn(Rendering.view("userDataForm")
+                        .modelAttribute("volunteer", volunteerService.getVolunteerById(volunteerId))
+                        .modelAttribute("volunteerDetails", volunteerDetailsService.getVolunteerDetailsByPatron(volunteerId))
+                        .build());
+    }
 
     private Mono<Void> setRedirectAttributes(final Model model, final WebSession session) {
         return Mono.fromRunnable(

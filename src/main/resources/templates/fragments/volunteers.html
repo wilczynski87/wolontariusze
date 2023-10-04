@@ -6,7 +6,7 @@
     <title>Wolontariusze</title>
 </head>
 <body>
-    <table th:fragment="volunteers" class="table">
+    <table th:fragment="volunteers" class="table table-hover">
         <caption>Wolontariusze</caption>
         <thead>
         <tr>
@@ -23,38 +23,45 @@
             <th>Tel</th>
             <th>Email</th>
             <th>Adres</th>
-            <!-- ,private Long ;
-            private String name;
-            private String surname;
-            private LocalDate dob;
-            private LocalDate started;
-            private LocalDate ended;
-            private LocalDate lastActivity;
-            private String phone;
-            private String email;
-            private String address; -->
         </tr>
         </thead>
         <tbody>
-        <tr th:each="volunteer : ${volunteers}">
-            <td th:text="${volunteer.id}"></td>
-            <td th:text="${volunteer.username}"></td>
-            <td th:text="${volunteer.role}"></td>
-            <th:block th:if="${volunteer.getVolunteerDetails(volunteersDetails)}" th:object="${volunteer.getVolunteerDetails(volunteersDetails)}">
-                <!-- <td th:text="${volunteer.getVolunteerDetails(volunteersDetails)}"></td> -->
-                <td th:text="*{patron}"></td>
-                <td th:text="*{name}"></td>
-                <td th:text="*{surname}"></td>
-                <td th:text="*{dob}"></td>
-                <td th:text="*{started}"></td>
-                <td th:text="*{ended}"></td>
-                <td th:text="*{lastActivity}"></td>
-                <td th:text="*{phone}"></td>
-                <td th:text="*{email}"></td>
-                <td th:text="*{address}"></td>
-            </th:block>
-        </tr>
+            <tr th:each="volunteer : ${volunteers}" 
+                th:attr="hx-get=|/volunteerDataForm/${volunteer.id}|" 
+                hx-target="#modals-volunteer"
+                hx-trigger="click"
+                data-bs-toggle="modal"
+                data-bs-target="#modals-volunteer">
+                <td th:text="${volunteer.id}"></td>
+                <td th:text="${volunteer.username}"></td>
+                <td th:text="${volunteer.role}"></td>
+                <th:block th:if="${volunteer.getVolunteerDetails(volunteersDetails)}" 
+                    th:object="${volunteer.getVolunteerDetails(volunteersDetails)}">
+                    <td th:text="*{patron}"></td>
+                    <td th:text="*{name}"></td>
+                    <td th:text="*{surname}"></td>
+                    <td th:text="*{dob}"></td>
+                    <td th:text="*{started}"></td>
+                    <td th:text="*{ended}"></td>
+                    <td th:text="*{lastActivity}"></td>
+                    <td th:text="*{phone}"></td>
+                    <td th:text="*{email}"></td>
+                    <td th:text="*{address}"></td>
+                </th:block>
+            </tr>
+            <tr>
+                <td colspan="13"><input class="btn btn-success" value="Dodaj Wolontariusza" /></td>
+            </tr>
         </tbody>
+        <div id="modals-volunteer"
+             class="modal modal-blur fade"
+             style="display: none"
+             aria-hidden="false"
+             tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content"></div>
+            </div>
+        </div>
     </table>
 
 </body>

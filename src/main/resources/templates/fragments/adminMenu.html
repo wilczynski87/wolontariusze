@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+    <div id="navBar" class="row card border-1" th:fragment="navBar">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded shadow container-fluid">
+            <button class="navbar-toggler ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse ms-1" id="navbarTogglerDemo03">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#greeter">Do góry</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#volunteers" aria-expanded="false" aria-controls="volunteers">Wolontariusze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contactTable">Tabela kontaktów</a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            hx-get="/userDataForm"
+                            hx-target="#modals-here"
+                            hx-trigger="click"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modals-here"
+                            class="nav-link">
+                            Twoje dane
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Wyloguj</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="modals-here"
+             class="modal modal-blur fade"
+             style="display: none"
+             aria-hidden="false"
+             tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

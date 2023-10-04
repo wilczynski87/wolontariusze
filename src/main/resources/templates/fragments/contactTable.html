@@ -8,6 +8,7 @@
 
     <div class="row" id="contactTable" th:fragment="contactTable">
         <table class = "table table-responsive table-bordered table-striped">
+            <caption>Lista kontaktów</caption>
             <thead>
             <tr>
                 <th> Imie i Nazwisko</th>
@@ -16,6 +17,7 @@
                 <th> Ostatni kontakt</th>
                 <th> Nastawienie</th>
                 <th> Komentarz</th>
+                <th th:if="${adminRole}">Patron</th>
             </tr>
             </thead>
             <tbody>
@@ -26,6 +28,11 @@
                 <td th:text="${contact.lastContact}"></td>
                 <td th:text="${T(com.dlarodziny.wolontariusze.model.Attitude).values()[contact.attitude].getAttitude()}"></td>
                 <td th:text="${contact.comment}"></td>
+                <!-- <td th:if="${adminRole}" th:text="${contact.getVolunteerName(patrons)}"></td> -->
+                <div th:if="${adminRole && contact.getVolunteerDetails(patrons) != null}" th:object="${contact.getVolunteerDetails(patrons)}">
+                    <td>[[*{name}]] [[*{surname}]]</td>
+                </div>
+                <td th:if="${adminRole}" th:unless="${contact.getVolunteerDetails(patrons)}">patron Id: [[${contact.patron}]]</td>
             </tr>
             </tbody>
         </table>

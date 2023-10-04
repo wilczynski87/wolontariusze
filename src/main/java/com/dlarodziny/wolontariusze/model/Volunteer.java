@@ -30,6 +30,6 @@ public class Volunteer {
             .filter(details -> details.getPatron().equals(this.id))
             .findFirst()
             .orElse(null);
-    };
+    }
 
 }

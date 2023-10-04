@@ -2,6 +2,8 @@ package com.dlarodziny.wolontariusze.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dlarodziny.wolontariusze.model.Volunteer;
@@ -21,10 +23,13 @@ public class VolunteerDetailsController {
     }
 
     @PatchMapping("/updateUserDetails")
-    public void updateUser(VolunteerDetails volunteerDetails, final Authentication authentication) {
-        volunteerService.getVolunteerByUsername(authentication.getName())
+    public void updateUser(VolunteerDetails volunteerDetails, final Authentication authentication, @RequestParam(required = false) Long id) {
+        if(id != null) volunteerDetailsService.updateVolunteerDetails(volunteerDetails, id).subscribe();
+        else volunteerService.getVolunteerByUsername(authentication.getName())
             .map(Volunteer::getId)
             .subscribe(userId -> volunteerDetailsService.updateVolunteerDetails(volunteerDetails, userId).subscribe());
     }
+
+    
            
 }

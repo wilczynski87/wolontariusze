@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Arrays;
 
 @Table("VOLUNTEERDETAILS")
 @Data
@@ -33,5 +34,15 @@ public class VolunteerDetails {
 
     public VolunteerDetails(Long patron) {
         this.patron = patron;
-    };
+    }
+
+    public static VolunteerDetails getVolunteerDetails(VolunteerDetails[] volunteerDetails, Long id) {
+        System.out.println(volunteerDetails);
+        return Arrays.stream(volunteerDetails)
+            .filter(details -> details.getPatron().equals(id))
+            .findFirst()
+            .orElse(null);
+    }
+
+    
 }

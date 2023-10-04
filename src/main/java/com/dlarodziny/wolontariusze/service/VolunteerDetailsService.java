@@ -3,6 +3,8 @@ package com.dlarodziny.wolontariusze.service;
 import com.dlarodziny.wolontariusze.model.VolunteerDetails;
 import com.dlarodziny.wolontariusze.repository.VolunteerDetailsRepo;
 import org.springframework.stereotype.Service;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -20,6 +22,9 @@ public class VolunteerDetailsService {
         return volunteerDetailsRepo.getVolunteerDetailsByUsername(username)
                 ;
     }
+    public Flux<VolunteerDetails> getAllVolunteerDetails() {
+        return volunteerDetailsRepo.findAll();
+    }
     public Mono<VolunteerDetails> addVolunteerDetails(Long patron, VolunteerDetails volunteerDetails) {
         volunteerDetails.setPatron(patron);
         return volunteerDetailsRepo.save(volunteerDetails);
@@ -31,8 +36,6 @@ public class VolunteerDetailsService {
                     volunteerDetails.setId(old.getId());
                     volunteerDetails.setPatron(old.getPatron());
                     volunteerDetails.setStarted(old.getStarted());
-                    // volunteerDetails.setLastActivity(old.getLastActivity());
-                    // volunteerDetails.setEnded(old.getEnded());
                     return volunteerDetails;
                 })
                 .flatMap(volunteerDetailsRepo::save);

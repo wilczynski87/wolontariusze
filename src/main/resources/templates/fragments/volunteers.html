@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <title>Wolontariusze</title>
+</head>
+<body>
+    <table th:fragment="volunteers" class="table">
+        <caption>Wolontariusze</caption>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>patron</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Data urodzenia</th>
+            <th>Rozpoczęcie</th>
+            <th>Zakończenie</th>
+            <th>Ostatnio zalogowany</th>
+            <th>Tel</th>
+            <th>Email</th>
+            <th>Adres</th>
+            <!-- ,private Long ;
+            private String name;
+            private String surname;
+            private LocalDate dob;
+            private LocalDate started;
+            private LocalDate ended;
+            private LocalDate lastActivity;
+            private String phone;
+            private String email;
+            private String address; -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="volunteer : ${volunteers}">
+            <td th:text="${volunteer.id}"></td>
+            <td th:text="${volunteer.username}"></td>
+            <td th:text="${volunteer.role}"></td>
+            <th:block th:if="${volunteer.getVolunteerDetails(volunteersDetails)}" th:object="${volunteer.getVolunteerDetails(volunteersDetails)}">
+                <!-- <td th:text="${volunteer.getVolunteerDetails(volunteersDetails)}"></td> -->
+                <td th:text="*{patron}"></td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{surname}"></td>
+                <td th:text="*{dob}"></td>
+                <td th:text="*{started}"></td>
+                <td th:text="*{ended}"></td>
+                <td th:text="*{lastActivity}"></td>
+                <td th:text="*{phone}"></td>
+                <td th:text="*{email}"></td>
+                <td th:text="*{address}"></td>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

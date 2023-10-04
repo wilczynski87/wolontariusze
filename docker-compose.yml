@@ -1,0 +1,31 @@
+version: '1'
+
+services:
+  wolontariusze:
+    image: 'wolontariusze:latest'
+    ports:
+      - "8081:8081"
+    build:
+      context: .
+    container_name: wolontariusze
+    depends_on:
+      - dbwolontariusze
+    environment:
+      - SPRING_DATASOURCE_URL=r2dbc:postgresql://dbwolontariusze:5432/wolontariusze
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+          
+  dbwolontariusze:
+    image: 'postgres:latest'
+    container_name: dbwolontariusze
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wolontariusze
+    ports:
+      - "5432:5432"
+    volumes: 
+      - dbwolontariusze:/var/lib/postgresql/data
+    
+volumes:
+  dbwolontariusze:

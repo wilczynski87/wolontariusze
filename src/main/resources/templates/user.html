@@ -16,37 +16,37 @@
     <script type="text/javascript" th:src="@{/scripts.js}" defer></script>
 </head>
 <body>
-<div class = "container">
-    <h1>Hello</h1>
-    <div th:unless="${volunteer}" class="row" id="greeter">
-        <h2>Cześć <span th:text="*{user}" ></h2>
-        <p>Proszę uzupełnij swoje detale</p>
-    </div>
-    <div th:if="${volunteer}" class="row" th:object="${volunteer}">
-        <h2>Cześć <span th:text="*{name}" ></h2>
-        <!-- <p>Dziekujemy że z nami jesteś już od <span th:text="*{lasting()}"></span></p> -->
-    </div>
-
-    <!--Menu-->
-    <th:block th:insert="~{fragments/userMenu :: navBar}" />
-
-    <!--Contact form-->
-    <div hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">
-        <div class="text-center spiner">
-            <strong>Ładuje formularz do kontaktów...</strong>
-            <div class="spinner-border" role="status" aria-hidden="true"></div>
+    <div class = "container">
+        <h1>Hello</h1>
+        <div th:unless="${volunteer}" class="row" id="greeter">
+            <h2>Cześć <span th:text="*{user}" ></h2>
+            <p>Proszę uzupełnij swoje detale</p>
         </div>
-    </div>
-
-    <!--table with contacts-->
-    <div id="contactTable" hx-get="/contactTable" hx-trigger="load" hx-swap="outerHTML">
-        <div class="text-center spiner">
-            <strong>Ładuje tabelę kontaktów...</strong>
-            <div class="spinner-border" role="status" aria-hidden="true"></div>
+        <div th:if="${volunteer}" class="row" th:object="${volunteer}">
+            <h2>Cześć <span th:text="*{name}" ></h2>
+            <!-- <p>Dziekujemy że z nami jesteś już od <span th:text="*{lasting()}"></span></p> -->
         </div>
-    </div>
 
-</div>
+        <!--Menu-->
+        <th:block th:insert="~{fragments/userMenu :: navBar}" />
+
+        <!--Contact form-->
+        <div hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">
+            <div class="text-center spiner">
+                <strong>Ładuje formularz do kontaktów...</strong>
+                <div class="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <!--table with contacts-->
+        <div id="contactTable" hx-get="/contactTable" hx-trigger="load" hx-swap="outerHTML">
+            <div class="text-center spiner">
+                <strong>Ładuje tabelę kontaktów...</strong>
+                <div class="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+
+    </div>
 <script type="text/javascript" th:inline="javascript">
     const attitudes = /*[[${attitudes}]]*/ [];
 </script>

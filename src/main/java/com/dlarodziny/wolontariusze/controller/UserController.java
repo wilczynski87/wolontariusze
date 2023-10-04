@@ -23,6 +23,11 @@ public class UserController {
         return volunteerService.getAllVlounteers();
     }
 
+    @GetMapping("/getAllUsersWithDetails")
+    public Flux<Volunteer> getAllUsersWithDetails() {
+        return volunteerService.getAllVlounteersWithDetails();
+    }
+
     @PostMapping("addUser")
     public Mono<Volunteer> addUser(@RequestBody Volunteer volunteer) {
         return volunteerService.addVolunteer(volunteer);

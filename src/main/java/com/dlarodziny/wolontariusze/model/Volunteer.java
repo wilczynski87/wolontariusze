@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Table("VOLUNTEER")
@@ -23,5 +24,12 @@ public class Volunteer {
     public AuthenticatedUser toAuthUser() {
          return new AuthenticatedUser(this.username, this.password);
     }
+
+    public VolunteerDetails getVolunteerDetails(VolunteerDetails[] volunteerDetails) {
+        return Arrays.stream(volunteerDetails)
+            .filter(details -> details.getPatron().equals(this.id))
+            .findFirst()
+            .orElse(null);
+    };
 
 }

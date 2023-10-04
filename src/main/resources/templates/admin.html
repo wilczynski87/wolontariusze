@@ -2,33 +2,53 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="UTF-8">
-    <title>Login for Volunteer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Panel administratora</title>
+    <link rel="shortcut icon" href="#" />
+    <!--Bootstrap CSS-->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+    <link th:rel="stylesheet" th:href="@{/styles.css}" />
+    <!--Bootstrap JS-->
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+    <!--HTMX-->
+    <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+    <script type="text/javascript" th:src="@{/scripts.js}" defer></script>
 </head>
 <body>
-    <h1>Greate Succes!</h1>
-    <h2 th:text="${volunteer}">Greetings!</h2>
-    <table id="actionTable" class="table table-bordered" style="width: 100%">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>phone</th>
-            <th>email</th>
-            <th>lastContact</th>
-            <th>attitude</th>
-            <th>comment</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="contact : ${contacts}">
-            <td th:text="${contact.contactName}">Name</td>
-            <td th:text="${contact.phone}">Position</td>
-            <td th:text="${contact.email}">Office</td>
-            <td th:text="${#dates.format(contact.lastContact, 'dd.MM.yyyy')}">Start date</td>
-            <td th:text="${contact.attitude}">Office</td>
-            <td th:text="${contact.comment}">Office</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class = "container">
+        <h1>Witama Pana administratora!</h1>
+        <!-- Greeter -->
+        <div th:unless="${volunteer}" class="row" id="greeter">
+            <h2>Cześć <span th:text="*{user}" ></h2>
+            <p>Proszę uzupełnij swoje detale</p>
+        </div>
+        <div th:if="${volunteer}" class="row" th:object="${volunteer}">
+            <h2>Cześć <span th:text="*{name}" ></h2>
+            <!-- <p>Dziekujemy że z nami jesteś już od <span th:text="*{lasting()}"></span></p> -->
+        </div>
+
+        <!--Menu-->
+        <th:block th:insert="~{fragments/userMenu :: navBar}" />
+
+        <!--Contact form-->
+        <div hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">
+            <div class="text-center spiner">
+                <strong>Ładuje formularz do kontaktów...</strong>
+                <div class="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <!--table with contacts-->
+        <div id="contactTable" hx-get="/contactTable" hx-trigger="load" hx-swap="outerHTML">
+            <div class="text-center spiner">
+                <strong>Ładuje tabelę kontaktów...</strong>
+                <div class="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <!--table with volunteers-->
+        <div id="volunteers" th:insert="~{fragments/volunteers :: volunteers}"></div>
+
+    </div>
 </body>
 </html>

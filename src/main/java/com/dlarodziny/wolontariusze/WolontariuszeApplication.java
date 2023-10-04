@@ -2,7 +2,6 @@ package com.dlarodziny.wolontariusze;
 
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
@@ -21,10 +20,15 @@ public class WolontariuszeApplication {
 		return initializer;
 	}
 
+	// public static void main(String[] args) {
+	// 	SpringApplication app = new SpringApplication(WolontariuszeApplication.class);
+	// 	app.setWebApplicationType(WebApplicationType.REACTIVE);
+	// 	app.run(args);
+	// 	System.out.println("\n\nWolontariuszeApplication is On!!!\n");
+	// }
+
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(WolontariuszeApplication.class);
-		app.setWebApplicationType(WebApplicationType.REACTIVE);
-		app.run(args);
+		SpringApplication.run(WolontariuszeApplication.class, args);
 		System.out.println("\n\nWolontariuszeApplication is On!!!\n");
 	}
 

@@ -2,9 +2,7 @@ package com.dlarodziny.wolontariusze.service;
 
 import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.repository.VolunteerRepo;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,7 +20,9 @@ public class VolunteerService {
     public Flux<Volunteer> getAllVlounteers() {
         return volunteerRepo.findAll();
     }
-
+    public Flux<Volunteer> getAllVlounteersWithDetails() {
+        return volunteerRepo.findAll();
+    }
     public Mono<Volunteer> addVolunteer(Volunteer volunteer) {
         return volunteerRepo.save(volunteer);
     }

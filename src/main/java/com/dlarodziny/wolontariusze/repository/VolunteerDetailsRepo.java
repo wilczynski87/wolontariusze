@@ -1,6 +1,5 @@
 package com.dlarodziny.wolontariusze.repository;
 
-import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.model.VolunteerDetails;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;

@@ -50,7 +50,14 @@
                 </th:block>
             </tr>
             <tr>
-                <td colspan="13"><input class="btn btn-success" value="Dodaj Wolontariusza" /></td>
+                <td colspan="13">
+                    <input class="btn btn-success" value="Dodaj Wolontariusza" 
+                        hx-get="/addVolunteer"
+                        hx-target="#modals-volunteer"
+                        hx-trigger="click"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modals-volunteer"/>
+                </td>
             </tr>
         </tbody>
         <div id="modals-volunteer"

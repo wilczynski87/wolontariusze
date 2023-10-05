@@ -16,17 +16,17 @@ import java.util.Arrays;
 @NoArgsConstructor
 public class VolunteerDetails {
     @Id
-    private Long id;
-    private Long patron;
-    private String name;
-    private String surname;
-    private LocalDate dob;
-    private LocalDate started;
-    private LocalDate ended;
-    private LocalDate lastActivity;
-    private String phone;
-    private String email;
-    private String address;
+    Long id;
+    Long patron;
+    String name;
+    String surname;
+    LocalDate dob;
+    LocalDate started;
+    LocalDate ended;
+    LocalDate lastActivity;
+    String phone;
+    String email;
+    String address;
 
     public String lasting() {
         return Period.between(this.started, LocalDate.now()).toString();

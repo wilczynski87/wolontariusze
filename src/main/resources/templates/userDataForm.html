@@ -5,15 +5,18 @@
     <title>Moje dane</title>
 </head>
 <body>
-    <div class="card container px-4 my-3" id="userDataForm">
+    <div class="card container px-4 my-3" id="userDataForm" th:fragment="userDataForm">
         <br>
-        <h1>Cześć </h1>
+        <h1>Cześć 
+            <th:block th:if="${nameOfUser}">[[${nameOfUser}]]</th:block>
+            <th:block th:if="${editVolunteer != null}">[[${editVolunteer}]]</th:block>
+        </h1>
         <!-- USER -->
         <form data-sb-form-api-token="API_TOKEN" hx-patch="/updateUser" hx-indicator="#indicator" class="p-1">
                     <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
                     <input type="hidden" th:name="id" th:value="${volunteer.id}" />
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="username" name="username" type="text" data-sb-validations="required" th:value="${volunteer.username}"/>
+                    <input class="form-control" id="username" name="username" type="text" data-sb-validations="required" th:value="${volunteer.username}" th:disabled="${!adminRole}"/>
                     <label for="username">twój nik:</label>
                     <div class="invalid-feedback" data-sb-feedback="username:required">twój nik:</div>
                 </div>
@@ -76,12 +79,12 @@
                 </div>
 
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="started" name="started" type="date" th:value="${volunteerDetails?.started}" disabled />
+                    <input class="form-control" id="started" name="started" type="date" th:value="${volunteerDetails?.started}" th:disabled="${!adminRole}" />
                     <label for="started">od kiedy z nami jesteś</label>
                 </div>
 
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="ended" name="ended" type="hidden" disabled/>
+                    <input class="form-control" id="ended" name="ended" th:type="${adminRole ? 'date' : 'hidden'}" />
                     <label for="ended">data końca współpracy</label>
                 </div>
 
@@ -91,6 +94,96 @@
                 </div>
             <div class="d-grid">
                 <button class="btn btn-primary btn-lg" id="submitButtonVolunteerDetails" name="submit" type="submit">Zaktualizuj</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ADD NEW VOLUNTEER -->
+    <div class="card container px-4 my-3" id="addUserDataForm" th:fragment="addUserDataForm">
+        <br>
+        <h1>Cześć 
+            <th:block th:if="${nameOfUser}">[[${nameOfUser}]]</th:block>
+            <th:block th:if="${editVolunteer != null}">[[${editVolunteer}]]</th:block>
+        </h1>
+        <!-- USER -->
+        <form data-sb-form-api-token="API_TOKEN" hx-post="/saveUser" hx-indicator="#indicator" hx-target="#volunteers" class="p-1">
+                    <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="username" name="username" type="text" data-sb-validations="required" th:value="${volunteer.username}" th:disabled="${!adminRole}"/>
+                    <label for="username">wybierz nick dla wolontariusza:</label>
+                    <div class="invalid-feedback" data-sb-feedback="username:required">twój nik:</div>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="password" name="password" type="password" th:value="${volunteer.password}" />
+                    <label for="password">hasło</label>
+                </div>
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="passwordCheck" name="passwordCheck" type="password" />
+                    <label for="passwordCheck">powtórz hasło</label>
+                </div>
+                <div class="mb-3">
+                    <seclect class="form-select input" id="role" name="role">
+                        <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="USER"></option>
+                    </seclect>  
+                </div>
+
+        <!-- VOLUNTEER DETAILS-->
+            <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="name" name="name" type="text" data-sb-validations="required" th:value="${volunteerDetails?.name}"/>
+                    <label for="name">Imię</label>
+                    <div class="invalid-feedback" data-sb-feedback="name:required">Podaj proszę swoje imie</div>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="surname" name="surname" type="text" data-sb-validations="required" th:value="${volunteerDetails?.surname}"/>
+                    <label for="surname">Nazwisko</label>
+                    <div class="invalid-feedback" data-sb-feedback="surname:required">Imię wolontariusza</div>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="phone" name="phone" type="tel" placeholder="+48 123 456 789"
+                           required pattern="[+][0-9]{2} [0-9]{3} [0-9]{3} [0-9]{3}"
+                           oninput="phoneValidator()" th:value="${volunteerDetails?.phone}" />
+                    <label for="phone">+48 123 456 789</label>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="emailAddress" type="email" name="email" placeholder="Email Address" data-sb-validations="required,email" 
+                        th:value="${volunteerDetails?.email}" />
+                    <label for="emailAddress">Email</label>
+                    <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email Address is required.</div>
+                    <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email Address Email is not valid.</div>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="address" name="address" type="text" data-sb-validations="required" th:value="${volunteerDetails?.address}"/>
+                    <label for="address">Adres</label>
+                    <div class="invalid-feedback" data-sb-feedback="address:required">Podaj proszę adres</div>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="dob" name="dob" type="date" th:value="${volunteerDetails?.dob}"/>
+                    <label for="dob">data urodzenia</label>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="started" name="started" type="date" th:value="${volunteerDetails?.started}" th:disabled="${!adminRole}" />
+                    <label for="started">od kiedy zobowiązuje umowa</label>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="ended" name="ended" th:type="${adminRole ? 'date' : 'hidden'}" />
+                    <label for="ended">data końca współpracy</label>
+                </div>
+
+                <div class="form-floating mb-3 col-lg">
+                    <input class="form-control" id="lastActivity" name="lastActivity" type="date" th:value="${volunteerDetails?.lastActivity}" disabled/>
+                    <label for="lastActivity">poprzedni dzień aktywności</label>
+                </div>
+            <div class="d-grid">
+                <button class="btn btn-primary btn-lg" id="submitButtonVolunteerDetails" name="submit" type="submit" data-bs-dismiss="modal">Zaktualizuj</button>
             </div>
         </form>
     </div>

@@ -86,7 +86,7 @@ public class UserViewController {
 
     @PostMapping("/saveUser")
     public Mono<Rendering> saveUserWithDetails(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
-        System.out.println(userWithDetails);
+        // System.out.println(userWithDetails);
         volunteerService.addVolunteer(userWithDetails.getVolunteer())
             .map(Volunteer::getId)
             .subscribe(volunteerId -> volunteerDetailsService.addVolunteerDetails(volunteerId, userWithDetails.getVolunteerDetails()).subscribe());

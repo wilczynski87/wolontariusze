@@ -1,6 +1,7 @@
 package com.dlarodziny.wolontariusze;
 
 import io.r2dbc.spi.ConnectionFactory;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 
 @SpringBootApplication
 public class WolontariuszeApplication {
+
 	@Bean
 	ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
 
@@ -29,6 +31,7 @@ public class WolontariuszeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WolontariuszeApplication.class, args);
+
 		System.out.println("\n\nWolontariuszeApplication is On!!!\n");
 	}
 

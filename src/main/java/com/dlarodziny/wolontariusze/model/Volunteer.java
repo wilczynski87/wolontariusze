@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 @Table("VOLUNTEER")
 @Data
@@ -30,6 +29,10 @@ public class Volunteer {
             .filter(details -> details.getPatron().equals(this.id))
             .findFirst()
             .orElse(null);
+    }
+
+    public String readRole() {
+        return this.role.equals("ROLE_ADMIN") ? Role.ADMIN.getRoleDesc() : Role.USER.getRoleDesc();
     }
 
 }

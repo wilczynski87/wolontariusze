@@ -34,7 +34,7 @@
                 data-bs-target="#modals-volunteer">
                 <td th:text="${volunteer.id}"></td>
                 <td th:text="${volunteer.username}"></td>
-                <td th:text="${volunteer.role}"></td>
+                <td th:text="${volunteer.readRole()}"></td>
                 <th:block th:if="${volunteer.getVolunteerDetails(volunteersDetails)}" 
                     th:object="${volunteer.getVolunteerDetails(volunteersDetails)}">
                     <td th:text="*{patron}"></td>

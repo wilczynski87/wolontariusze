@@ -7,7 +7,7 @@ public class UserWithDetails extends VolunteerDetails {
     private Long id;
     private String username;
     private String password;
-    private String role = Role.USER.getRole();
+    private String role = Role.USER.getRoleDesc();
     private boolean active = true;
 
     public Volunteer getVolunteer() {

@@ -1,16 +1,22 @@
 package com.dlarodziny.wolontariusze.model;
 
 public enum Role {
-    ADMIN("ADMIN"),
-    USER("USER");
+    ADMIN("Administrator", "ADMIN_ROLE"),
+    USER("Wolontariusz", "USER_ROLE");
 
     private final String roleDesc;
+    private final String securityRoleName;
 
-    Role(String roleDesc) {
+    Role(String roleDesc, String securityRoleName) {
         this.roleDesc = roleDesc;
+        this.securityRoleName = securityRoleName;
     }
 
-    public String getRole() {
+    public String getRoleDesc() {
+        return this.roleDesc;
+    }
+    
+    public String getSecurityRole() {
         return this.roleDesc;
     }
     

@@ -55,21 +55,6 @@ public class SecurityConfig {
 			});
 	}
 
-    // @Bean
-    // public MapReactiveUserDetailsService userDetailsService() {
-    //     UserDetails admin = User.withDefaultPasswordEncoder()
-    //            .username("admin")
-    //            .password("admin")
-    //            .roles("ADMIN")
-    //            .build();
-    //     UserDetails user = User.withDefaultPasswordEncoder()
-    //            .username("user")
-    //            .password("user")
-    //            .roles("USER")
-    //            .build();
-    //     return new MapReactiveUserDetailsService(admin, user);
-    // }
-
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
@@ -80,8 +65,8 @@ public class SecurityConfig {
                         .anyExchange().authenticated()
                 )
                 .formLogin(withDefaults())
-                .logout(withDefaults());
-        ;
+                .logout(withDefaults())
+                ;
         return http.build();
     }
 }

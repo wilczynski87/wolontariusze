@@ -1,6 +1,7 @@
 package com.dlarodziny.wolontariusze.cofig;
 
 import com.dlarodziny.wolontariusze.repository.VolunteerRepo;
+import com.dlarodziny.wolontariusze.service.AuthenticatedUserService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,49 +28,28 @@ public class SecurityConfig {
     @Autowired
     VolunteerRepo volunteerRepo;
 
+    @Autowired
+    AuthenticatedUserService authenticatedUserService;
+
     @Bean
-    protected ReactiveAuthenticationManager reactiveAuthenticationManager() {
-    return authentication -> volunteerService.findByUsername(authentication.getPrincipal().toString())
-                                .switchIfEmpty( Mono.error(new UsernameNotFoundException("User not found")))
-                                .flatMap(user -> {
-                                    final String username = authentication.getPrincipal().toString();
-                                    final String rawPassword = authentication.getCredentials().toString();
+	protected ReactiveAuthenticationManager reactiveAuthenticationManager() {
+		return authentication -> authenticatedUserService.findByUsername(authentication.getPrincipal().toString())
+			.switchIfEmpty( Mono.error( new UsernameNotFoundException("User not found")))
+			.flatMap(user -> {
+				final String username = authentication.getPrincipal().toString();
+				final CharSequence rawPassword = authentication.getCredentials().toString();
 
-                                    if(rawPassword.equals(user.getPassword())){
-                                        log.info("User has been authenticated {}", username);
-                                        return Mono.just( new UsernamePasswordAuthenticationToken(username, user.getPassword(), user.getAuthorities()) );
-                                    }
+                if(rawPassword.equals(user.getPassword())){
 
-                                    //This constructor can be safely used by any code that wishes to create a UsernamePasswordAuthenticationToken, as the isAuthenticated() will return false.
-                                    return Mono.just( new UsernamePasswordAuthenticationToken(username, authentication.getCredentials()));
-                });
-    };
+					log.info("User has been authenticated {}", username);
+					return Mono.just( new UsernamePasswordAuthenticationToken(username, user.getPassword(), user.getAuthorities()) );
+				}
 
-    // @Bean
-    // public MapReactiveUserDetailsService userDetailsService() {
-    //     UserDetails admin = User.withDefaultPasswordEncoder()
-    //            .username("admin")
-    //            .password("admin")
-    //            .roles("ADMIN")
-    //            .build();
-    //     // UserDetails user = User.withDefaultPasswordEncoder()
-    //     //        .username("user")
-    //     //        .password("user")
-    //     //        .roles("USER")
-    //     //        .build();
-    //     // return new MapReactiveUserDetailsService(admin, user);
+				//This constructor can be safely used by any code that wishes to create a UsernamePasswordAuthenticationToken, as the isAuthenticated() will return false.
+				return Mono.just( new UsernamePasswordAuthenticationToken(username, authentication.getCredentials()) );
+			});
+	}
 
-    //     var userList = volunteerRepo.findAll()
-    //             .map(volunteer -> User.withDefaultPasswordEncoder()
-    //                     .username(volunteer.getUsername())
-    //                     .password(volunteer.getPassword())
-    //                     .roles(volunteer.getRole())
-    //                     .build())
-    //             .collectList().block();
-    //     assert userList != null;
-    //     userList.add(admin);
-    //     return new MapReactiveUserDetailsService(userList);
-    // }
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
@@ -80,8 +60,8 @@ public class SecurityConfig {
                         .anyExchange().authenticated()
                 )
                 .formLogin(withDefaults())
-                .logout(withDefaults());
-        ;
+                .logout(withDefaults())
+                ;
         return http.build();
     }
 }

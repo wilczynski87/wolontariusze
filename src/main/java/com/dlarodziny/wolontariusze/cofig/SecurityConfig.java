@@ -2,7 +2,12 @@ package com.dlarodziny.wolontariusze.cofig;
 
 import com.dlarodziny.wolontariusze.repository.VolunteerRepo;
 import com.dlarodziny.wolontariusze.service.AuthenticatedUserService;
+import com.dlarodziny.wolontariusze.service.AuthenticatedUserService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
+
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -14,10 +19,14 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import static org.springframework.security.config.Customizer.withDefaults;
 
+@Slf4j
 @Slf4j
 @Configuration
 @EnableWebFluxSecurity
@@ -27,6 +36,9 @@ public class SecurityConfig {
 
     @Autowired
     VolunteerRepo volunteerRepo;
+
+    @Autowired
+    AuthenticatedUserService authenticatedUserService;
 
     @Autowired
     AuthenticatedUserService authenticatedUserService;
@@ -60,6 +72,8 @@ public class SecurityConfig {
                         .anyExchange().authenticated()
                 )
                 .formLogin(withDefaults())
+                .logout(withDefaults())
+                ;
                 .logout(withDefaults())
                 ;
         return http.build();

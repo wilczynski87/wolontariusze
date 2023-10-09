@@ -3,10 +3,11 @@ package com.dlarodziny.wolontariusze.model;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -14,15 +15,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Slf4j
 @ToString
 public class AuthenticatedUser implements UserDetails {
 
     @Id
     private String username;
     private String password;
-
+    private int enabled;
     private boolean active = true;
-    private Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
+    private Set<GrantedAuthority> roles = new HashSet<>();
+
+    public AuthenticatedUser() {}
+    public AuthenticatedUser(Volunteer volunteer) {
+        this.setUsername(volunteer.getUsername());
+        this.setPassword(volunteer.getPassword());
+        this.setEnabled(volunteer.isActive() ? 1 : 0);
+        this.roles.add(new SimpleGrantedAuthority(volunteer.getRole()));
+
+        log.info("Match found : " + this.toString());
+    }
 
     @Builder
     public AuthenticatedUser(String username, String password){
@@ -65,42 +77,4 @@ public class AuthenticatedUser implements UserDetails {
     public String getUsername() {
         return this.username;
     }
-
-//    old implementation
-//    private String username;
-//    private Collection authorities;
-//
-//    public AuthenticatedUser(String username, Collection authorities){
-//        this.username = username;
-//        this.authorities = authorities;
-//    }
-//
-//    @Override
-//    public Collection getAuthorities() {
-//        return this.authorities;
-//    }
-//    @Override
-//    public String getPassword() {
-//        return getPassword();
-//    }
-//    @Override
-//    public String getUsername() {
-//        return username;
-//    }
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
 }

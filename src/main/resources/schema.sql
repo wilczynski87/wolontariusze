@@ -34,3 +34,10 @@ CREATE TABLE IF NOT EXISTS volunteerdetails (
     address VARCHAR(255),
     PRIMARY KEY (id)
     );
+
+INSERT INTO Volunteer (id, username, password, role, active) 
+SELECT 1, 'admin', 'admin', 'ROLE_ADMIN', true
+WHERE
+NOT EXISTS (
+SELECT id FROM Volunteer WHERE id = 1
+);

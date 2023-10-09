@@ -35,6 +35,7 @@ public class LoginController {
 
     @GetMapping("/")
     public Mono<Rendering> index(final Model model, final WebSession session, Authentication authentication) {
+        authentication.getAuthorities().forEach(x -> System.out.println(x));
         return authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
                 ? setRedirectAttributes(model, session)
                     .thenReturn(Rendering.view("admin")

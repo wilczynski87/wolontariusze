@@ -30,11 +30,4 @@ public class ContactController {
     public Flux<Contact> getAllContactsByUserId(@RequestParam Long id) {
         return contactService.getAllContactsByUserId(id);
     }
-//    @PostMapping("/contactTable")
-//    public Mono<Void> addToContactTable(Contact contact) {
-//        System.out.println(contact);
-//        return null;
-//    }
-
-//    @PatchMapping("/updateContact")
 }

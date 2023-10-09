@@ -20,9 +20,16 @@ public class AuthenticatedUser implements UserDetails {
     @Id
     private String username;
     private String password;
-
     private boolean active = true;
-    private Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
+    private Set<GrantedAuthority> roles = new HashSet<>();
+
+    public AuthenticatedUser(Volunteer volunteer){
+        this.username = volunteer.getUsername();
+        this.password = volunteer.getPassword();
+        this.active = volunteer.isActive();
+        roles.add(new SimpleGrantedAuthority(volunteer.getRole()));
+
+    }
 
     @Builder
     public AuthenticatedUser(String username, String password){
@@ -65,42 +72,4 @@ public class AuthenticatedUser implements UserDetails {
     public String getUsername() {
         return this.username;
     }
-
-//    old implementation
-//    private String username;
-//    private Collection authorities;
-//
-//    public AuthenticatedUser(String username, Collection authorities){
-//        this.username = username;
-//        this.authorities = authorities;
-//    }
-//
-//    @Override
-//    public Collection getAuthorities() {
-//        return this.authorities;
-//    }
-//    @Override
-//    public String getPassword() {
-//        return getPassword();
-//    }
-//    @Override
-//    public String getUsername() {
-//        return username;
-//    }
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
 }

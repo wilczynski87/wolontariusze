@@ -1,10 +1,11 @@
-version: '1'
+version: '2'
 
 services:
   wolontariusze:
-    image: 'wolontariusze:latest'
+    image: 'wilczynski87/wolontariusze:latest'
+    restart: always
     ports:
-      - "8081:8081"
+      - "20327:20327"
     build:
       context: .
     container_name: wolontariusze
@@ -14,9 +15,17 @@ services:
       - SPRING_DATASOURCE_URL=r2dbc:postgresql://dbwolontariusze:5432/wolontariusze
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
+      - PORT=20327
+    healthcheck:
+      test: curl --fail http://localhost:20327 || exit 1
+      interval: 300s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
           
   dbwolontariusze:
     image: 'postgres:latest'
+    restart: always
     container_name: dbwolontariusze
     environment:
       - POSTGRES_USER=postgres
@@ -26,6 +35,50 @@ services:
       - "5432:5432"
     volumes: 
       - dbwolontariusze:/var/lib/postgresql/data
+
+  pgbackups:
+    container_name: Backup
+    image: prodrigestivill/postgres-backup-local
+    restart: always
+    volumes:
+      - ./backup:/backups
+    links:
+      - dbwolontariusze:dbwolontariusze
+    depends_on:
+      - dbwolontariusze
+    environment:
+      - POSTGRES_HOST=dbwolontariusze
+      - POSTGRES_DB=wolontariusze
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_EXTRA_OPTS=-Z9 --schema=public --blobs
+      - SCHEDULE=@every 0h30m00s
+      - BACKUP_KEEP_DAYS=7
+      - BACKUP_KEEP_WEEKS=4
+      - BACKUP_KEEP_MONTHS=6
+      - HEALTHCHECK_PORT=81
+
+  pgadmin4:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    ports: 
+      - "30327:30327"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=ppp@ppp.ppp
+      - PGADMIN_DEFAULT_PASSWORD=ppp
+
+  autoheal:
+      image: willfarrell/autoheal:latest
+      tty: true
+      restart: always
+      environment:
+        - AUTOHEAL_INTERVAL=6
+        - AUTOHEAL_START_PERIOD=3
+        - AUTOHEAL_DEFAULT_STOP_TIMEOUT=10
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+  
     
 volumes:
   dbwolontariusze:

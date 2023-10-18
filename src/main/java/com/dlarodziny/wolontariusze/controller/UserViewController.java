@@ -1,28 +1,28 @@
 package com.dlarodziny.wolontariusze.controller;
 
+import com.dlarodziny.wolontariusze.model.Attitude;
 import com.dlarodziny.wolontariusze.model.UserWithDetails;
 import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.model.VolunteerDetails;
 import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Arrays;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
-import org.springframework.context.support.BeanDefinitionDsl.Role;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Controller
 public class UserViewController {
 
@@ -75,28 +75,29 @@ public class UserViewController {
     public Mono<Rendering> addVolunteer(final Model model, final WebSession session, Authentication authentication) {
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("userDataForm :: addUserDataForm")
-                        .modelAttribute("volunteer", new Volunteer())
-                        .modelAttribute("volunteerDetails", new VolunteerDetails())
-                        .modelAttribute("adminRole", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
-                        .modelAttribute("editVolunteer", "dodajmy nowego urzytkownika")
-                        .modelAttribute("nameOfUser", "Panie administratorze ")
-                        .modelAttribute("roles", com.dlarodziny.wolontariusze.model.Role.values())
-                        .build());
+                    .modelAttribute("volunteer", new Volunteer())
+                    .modelAttribute("volunteerDetails", new VolunteerDetails())
+                    .modelAttribute("adminRole", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                    .modelAttribute("editVolunteer", "dodajmy nowego urzytkownika")
+                    .modelAttribute("nameOfUser", "Panie administratorze ")
+                    .modelAttribute("roles", com.dlarodziny.wolontariusze.model.Role.values())
+                    .build());
     }
 
     @PostMapping("/saveUser")
     public Mono<Rendering> saveUserWithDetails(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
-        // System.out.println(userWithDetails);
         volunteerService.addVolunteer(userWithDetails.getVolunteer())
             .map(Volunteer::getId)
             .subscribe(volunteerId -> volunteerDetailsService.addVolunteerDetails(volunteerId, userWithDetails.getVolunteerDetails()).subscribe());
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("fragments/volunteers :: volunteers")
-                        .modelAttribute("volunteer", volunteerService.getVolunteerByUsername(authentication.getName()))
-                        .modelAttribute("volunteerDetails", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()))
-                        .modelAttribute("adminRole", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
-                        .modelAttribute("nameOfUser", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()).map(VolunteerDetails::getName))
-                        .build());
+                    .modelAttribute("volunteer", volunteerService.getVolunteerByUsername(authentication.getName()))
+                    .modelAttribute("volunteers", volunteerService.getAllVlounteers())
+                    .modelAttribute("volunteersDetails", volunteerDetailsService.getAllVolunteerDetails())
+                    .modelAttribute("attitudes", Arrays.stream(Attitude.values()).map(Attitude::getAttitude).toArray())
+                    .modelAttribute("adminRole", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                    .modelAttribute("nameOfUser", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()).map(VolunteerDetails::getName))
+                    .build());
     }
 
     private Mono<Void> setRedirectAttributes(final Model model, final WebSession session) {

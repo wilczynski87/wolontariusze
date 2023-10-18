@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <div th:fragment="contactForm" class="card container px-4 my-3" id="contactForm">
+    <div th:fragment="contactForm" class="card container px-4 my-3 collapse" id="contactForm">
         <form id="" data-sb-form-api-token="API_TOKEN" hx-post="/contactTable" hx-target="#contactTable" hx-indicator="#indicator">
             <input id="csrf" type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
             <br>

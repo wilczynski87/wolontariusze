@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   wolontariusze:
@@ -20,7 +20,6 @@ services:
       test: curl --fail http://localhost:20327 || exit 1
       interval: 300s
       timeout: 10s
-      start_period: 30s
       retries: 3
           
   dbwolontariusze:
@@ -63,7 +62,7 @@ services:
     image: dpage/pgadmin4
     restart: always
     ports: 
-      - "30327:30327"
+      - "80:443"
     environment:
       - PGADMIN_DEFAULT_EMAIL=ppp@ppp.ppp
       - PGADMIN_DEFAULT_PASSWORD=ppp
@@ -73,8 +72,8 @@ services:
       tty: true
       restart: always
       environment:
-        - AUTOHEAL_INTERVAL=6
-        - AUTOHEAL_START_PERIOD=3
+        - AUTOHEAL_INTERVAL=60
+        - AUTOHEAL_START_PERIOD=30
         - AUTOHEAL_DEFAULT_STOP_TIMEOUT=10
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock

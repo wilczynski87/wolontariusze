@@ -1,16 +1,11 @@
 package com.dlarodziny.wolontariusze.service;
 
-import com.dlarodziny.wolontariusze.model.Attitude;
 import com.dlarodziny.wolontariusze.model.Contact;
-import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.repository.ContactRepo;
 import com.dlarodziny.wolontariusze.repository.VolunteerRepo;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ContactService {

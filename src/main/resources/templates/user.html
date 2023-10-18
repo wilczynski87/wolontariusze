@@ -31,7 +31,7 @@
         <th:block th:insert="~{fragments/userMenu :: navBar}" />
 
         <!--Contact form-->
-        <div hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">
+        <div id="contactForm" class="collapse" hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">
             <div class="text-center spiner">
                 <strong>Ładuje formularz do kontaktów...</strong>
                 <div class="spinner-border" role="status" aria-hidden="true"></div>

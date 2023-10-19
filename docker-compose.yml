@@ -62,7 +62,7 @@ services:
     image: dpage/pgadmin4
     restart: always
     ports: 
-      - "80:443"
+      - "30327:80"
     environment:
       - PGADMIN_DEFAULT_EMAIL=ppp@ppp.ppp
       - PGADMIN_DEFAULT_PASSWORD=ppp

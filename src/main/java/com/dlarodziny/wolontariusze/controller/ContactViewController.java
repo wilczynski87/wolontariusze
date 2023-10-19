@@ -1,13 +1,10 @@
 package com.dlarodziny.wolontariusze.controller;
 
-import com.dlarodziny.wolontariusze.model.Attitude;
 import com.dlarodziny.wolontariusze.model.Contact;
 import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.service.ContactService;
 import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
-
-import java.util.Arrays;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

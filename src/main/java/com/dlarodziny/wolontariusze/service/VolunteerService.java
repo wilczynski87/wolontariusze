@@ -30,7 +30,12 @@ public class VolunteerService {
     public Mono<Volunteer> getVolunteerById(Long id) {
         return volunteerRepo.findById(id);
     }
-    public Mono<Volunteer> getVolunteerByUsername(String username){ return volunteerRepo.findByUsername(username);}
+    public Mono<Volunteer> getVolunteerByUsername(String username){ 
+        return volunteerRepo.findByUsername(username);
+    }
+    public Mono<Boolean> isVolunteerSaved(String username){ 
+        return volunteerRepo.findByUsername(username).hasElement();
+    }
 
     public Mono<Void> deleteVolunteer(Long id) {
         return volunteerRepo.deleteById(id);

@@ -14,3 +14,9 @@ const phoneValidator = () => {
     phone.value = phone.value.replaceAll(/\s/g, "").match(/.{1,3}/g).join(" ");
 }
 
+const closeModal = () => {
+    const myModal = document.getElementById("loaderModalCloseBtn");
+    console.log(myModal)
+    myModal.click();
+}
+

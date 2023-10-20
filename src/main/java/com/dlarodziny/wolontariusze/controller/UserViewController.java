@@ -9,6 +9,7 @@ import com.dlarodziny.wolontariusze.service.VolunteerService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 import org.springframework.security.core.Authentication;
@@ -84,19 +85,38 @@ public class UserViewController {
                     .build());
     }
 
-    @PostMapping("/saveUser")
-    public Mono<Rendering> saveUserWithDetails(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
-        volunteerService.addVolunteer(userWithDetails.getVolunteer())
-            .map(Volunteer::getId)
-            .subscribe(volunteerId -> volunteerDetailsService.addVolunteerDetails(volunteerId, userWithDetails.getVolunteerDetails()).subscribe());
+    @GetMapping("/checkOnVolunteers")
+    public Mono<Rendering> checkOnVolunteers(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("fragments/volunteers :: volunteers")
-                    .modelAttribute("volunteer", volunteerService.getVolunteerByUsername(authentication.getName()))
                     .modelAttribute("volunteers", volunteerService.getAllVlounteers())
                     .modelAttribute("volunteersDetails", volunteerDetailsService.getAllVolunteerDetails())
                     .modelAttribute("attitudes", Arrays.stream(Attitude.values()).map(Attitude::getAttitude).toArray())
                     .modelAttribute("adminRole", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
                     .modelAttribute("nameOfUser", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()).map(VolunteerDetails::getName))
+                    .build());
+    }
+
+    @PostMapping("/saveUser")
+    public Mono<Rendering> saveUserWithDetails(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
+        // volunteerService.addVolunteer(userWithDetails.getVolunteer())
+        //     .map(Volunteer::getId)
+        //     .subscribe(volunteerId -> volunteerDetailsService.addVolunteerDetails(volunteerId, userWithDetails.getVolunteerDetails()).subscribe())
+        //     ;
+        return setRedirectAttributes(model, session)
+            .thenReturn(Rendering.view("fragments/loader :: loader")
+                .modelAttribute("username", userWithDetails.getUsername())
+                .modelAttribute("msg", "Zapisuje użytkownika")
+                .modelAttribute("sev", "info")
+                .build());
+    }
+
+    @GetMapping("/saveSuccess/{username}")
+    public Mono<Rendering> userSaved(final Model model, final WebSession session, @PathVariable String username) {
+        return setRedirectAttributes(model, session)
+                .thenReturn(Rendering.view("fragments/loader :: saveSuccess")
+                    .header("HX-Trigger", "userAdded")
+                    .modelAttribute("userSaved", volunteerService.isVolunteerSaved(username))
                     .build());
     }
 

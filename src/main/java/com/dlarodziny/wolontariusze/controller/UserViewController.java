@@ -105,9 +105,19 @@ public class UserViewController {
         //     ;
         return setRedirectAttributes(model, session)
             .thenReturn(Rendering.view("fragments/loader :: loader")
-                .modelAttribute("username", userWithDetails.getUsername())
+                .modelAttribute("userSaved", volunteerService.addVolunteer(userWithDetails.getVolunteer())
+                    .map(Volunteer::getId)
+                    .subscribe(volunteerId -> volunteerDetailsService.addVolunteerDetails(volunteerId, userWithDetails.getVolunteerDetails()).subscribe()))
                 .modelAttribute("msg", "Zapisuje użytkownika")
                 .modelAttribute("sev", "info")
+                .build());
+    }
+
+    @GetMapping("/checkNewUser")
+    public Mono<Rendering> saveUserWithDetails(final Model model, final WebSession session, Authentication authentication, String username) {
+        return setRedirectAttributes(model, session)
+            .thenReturn(Rendering.view("fragments/loader :: nickExists")
+                .modelAttribute("nickExists", volunteerService.isVolunteerSaved(username))
                 .build());
     }
 

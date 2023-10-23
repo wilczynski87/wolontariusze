@@ -19,14 +19,23 @@
         </th:div>
 
         <!-- Success -->
-        <th:div id="submitUserLoader" th:fragment="saveSuccess" th:class="'mt-3 alert alert-' + ${userSaved ? 'success' : 'danger'}" role="alert">
+        <th:div id="submitUserLoader" th:fragment="saveSuccess" class="mt-3 alert alert-info" role="alert">
             <div class="text-end">
                 <button id="loaderModalCloseBtn" type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="text-center spiner">
-                <strong th:text="${userSaved ? 'Użytkownik zapisany!' : 'Błąd!'}">Dupa zbita... </strong>
+                <strong th:text="${userSaved}">Dupa zbita... </strong>
                 <div class="spinner-border" role="status" aria-hidden="true"></div>
             </div>
         </th:div>
+
+        <!-- User Exists -->
+        <th:block th:fragment="nickExists">
+            <span id="nickExist" th:unless="${nickExists}" class="text-success">Nick jest wolny</span>
+            <span id="nickExist" th:if="${nickExists}" class="text-danger">Nick już istnieje!</span>
+            <script type="text/javascript" th:inline="javascript">
+                $(`#submitButtonVolunteerDetails`).prop('disabled', /*[[${nickExists}]]*/);
+            </script>
+        </th:block>
     </body>
 </html>

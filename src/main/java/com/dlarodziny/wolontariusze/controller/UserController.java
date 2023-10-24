@@ -47,6 +47,7 @@ public class UserController {
     public void updateUser(Volunteer volunteer, final Authentication authentication) {
         var oldVolunteer = volunteerService.getVolunteerByUsername(authentication.getName());
         oldVolunteer.map(user -> {
+                if(volunteer.getUsername() == null) volunteer.setUsername(user.getUsername());
                 volunteer.setId(user.getId());
                 volunteer.setRole(user.getRole());
                 volunteer.setActive(user.isActive());

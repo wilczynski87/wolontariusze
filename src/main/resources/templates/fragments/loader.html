@@ -34,7 +34,7 @@
             <span id="nickExist" th:unless="${nickExists}" class="text-success">Nick jest wolny</span>
             <span id="nickExist" th:if="${nickExists}" class="text-danger">Nick już istnieje!</span>
             <script type="text/javascript" th:inline="javascript">
-                $(`#submitButtonVolunteerDetails`).prop('disabled', /*[[${nickExists}]]*/);
+                $(`form button`).prop('disabled', /*[[${nickExists}]]*/);
             </script>
         </th:block>
     </body>

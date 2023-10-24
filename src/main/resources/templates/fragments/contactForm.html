@@ -8,40 +8,46 @@
 <body>
 
     <div th:fragment="contactForm" class="card container px-4 my-3 collapse" id="contactForm">
-        <form id="" data-sb-form-api-token="API_TOKEN" hx-post="/contactTable" hx-target="#contactTable" hx-indicator="#indicator">
+        <form id="addContactForm" data-sb-form-api-token="API_TOKEN" onsubmit="validatorAddContact(event)" novalidate
+            hx-post="/contactTable" 
+            hx-target="#contactTable" 
+            hx-trigger="sendContactForm"
+            hx-indicator="#indicator">
             <input id="csrf" type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
             <br>
             <div class="row">
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="contactName" name="contactName" type="text" placeholder="name" data-sb-validations="required" />
+                    <input class="form-control" id="contactName" name="contactName" type="text" placeholder="name" required />
                     <label for="contactName">Imię i Nazwisko / nazwa</label>
-                    <div class="invalid-feedback" data-sb-feedback="contactName:required">Imię i Nazwisko / nazwa jest wymagane</div>
+                    <div class="invalid-feedback">Imię i Nazwisko / nazwa jest wymagane</div>
                 </div>
 
                 <div class="form-floating mb-3 col-lg">
                     <input class="form-control" id="phone" name="phone" type="tel" placeholder="+48 123 456 789"
-                           required pattern="[+][0-9]{2} [0-9]{3} [0-9]{3} [0-9]{3}"
-                           oninput="phoneValidator()" />
+                           required pattern="[+][0-9]{2} [0-9]{3} [0-9]{3} [0-9]{3}" maxlength="15"
+                           oninput="phoneCorrector(this)" />
                     <label for="phone">+48 123 456 789</label>
+                    <div class="invalid-feedback">Numer tel jest konieczny</div>
                 </div>
 
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="emailAddress" type="email" name="email" placeholder="Email Address" data-sb-validations="required,email" />
+                    <input class="form-control" id="emailAddress" type="email" name="email" placeholder="Email Address" />
                     <label for="emailAddress">Email Address</label>
-                    <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email Address is required.</div>
-                    <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email Address Email is not valid.</div>
+                    <div class="invalid-feedback">Niepoprawny format maila, spróbuj: ppp@ppp.ppp</div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-floating mb-3 col-lg">
-                    <input class="form-control" id="lastContact" name="lastContact" type="date" placeholder="Ostatni kontakt:" />
+                    <input class="form-control" id="lastContact" name="lastContact" type="date" placeholder="Ostatni kontakt:" required/>
                     <label for="lastContact">Ostatni kontakt:</label>
+                    <div class="invalid-feedback">Podaj proszę kiedy kontaktowałeś/aś się z tą osobą? Format daty: dd.mm.rrrr</div>
                 </div>
 
                 <div class="card mb-3 col-lg">
                     <label for="attitude" class="form-label">Nastawienie: <span id="attitudeOutput" > nastawienie?</span></label>
-                    <input type="range" class="form-range" id="attitude" name="attitude" min="0" max="3" oninput="sliderValue()">
+                    <input type="range" class="form-range" id="attitude" name="attitude" min="0" max="3" oninput="sliderValue()" required>
+                    <div class="invalid-feedback">Oceń proszę nastawienie tej osoby</div>
                 </div>
             </div>
 
@@ -50,20 +56,12 @@
                 <label for="comment">Komentarz</label>
             </div>
 
-            <!-- <div class="d-none" id="submitSuccessMessage">
-                <div class="text-center mb-3">
-                    <div class="fw-bolder">Form submission successful!</div>
-                    <p>To activate this form, sign up at</p>
-                    <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                </div>
-            </div> -->
-
             <div class="d-none" id="submitErrorMessage">
                 <div class="text-center text-danger mb-3">Error sending message!</div>
             </div>
 
             <div class="d-grid">
-                <button class="btn btn-primary btn-lg" id="submitButton" name="submit" type="submit">Submit</button>
+                <button class="btn btn-primary btn-lg" id="submitButton" name="button" type="submit">Dodaj wpis</button>
             </div>
             <br>
 

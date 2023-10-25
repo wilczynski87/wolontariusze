@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"></script>
+</head>
+<body>
+    <nav th:fragment="pagination(page)" aria-label="Page navigation">
+        <!-- <span>[[${page}]]</span> -->
+        <ul class="pagination">
+            <li class="page-item">
+                <button class="page-link" aria-label="Previous" th:disabled="${page.getNumber() == 0}"
+                    hx-get="/contactTable" 
+                    hx-trigger="click" 
+                    hx-swap="outerHTML"
+                    hx-target="#contactTable"
+                    hx-params="page"
+                    th:attr='hx-vals=|"page":${page.getNumber()-1}|'>
+                    <span aria-hidden="true">&laquo;</span>
+                </button>
+            </li>
+            <th:li th:each="i : ${#numbers.sequence(1, page.getTotalPages(), 1)}" th:class="'page-item ' + ${page.getNumber() == i-1 ? 'active' : ''}">
+                <button class="page-link" th:text="${i}" 
+                    hx-get="/contactTable" 
+                    hx-trigger="click" 
+                    hx-swap="outerHTML"
+                    hx-target="#contactTable"
+                    hx-params="page"
+                    th:attr='hx-vals=|"page":${i-1}|'
+                ></button>
+            </th:li>
+            <li class="page-item">
+                <button class="page-link" aria-label="Next" th:disabled="${page.getNumber() == page.getTotalPages()-1}"
+                hx-get="/contactTable" 
+                hx-trigger="click" 
+                hx-swap="outerHTML"
+                hx-target="#contactTable"
+                hx-params="page"
+                th:attr='hx-vals=|"page":${page.getNumber()+1}|'>
+                    <span aria-hidden="true">&raquo;</span>
+                </button>
+            </li>
+        </ul>
+      </nav>
+</body>
+</html>

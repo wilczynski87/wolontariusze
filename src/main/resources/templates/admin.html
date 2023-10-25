@@ -48,14 +48,14 @@
         </div>
 
         <!--Contact form-->
-        <div th:if="${admin}" hidden>
+        <!-- <div th:if="${admin}" hidden>
             <div hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">
                 <div class="text-center spiner">
                     <strong>Ładuje formularz do kontaktów...</strong>
                     <div class="spinner-border" role="status" aria-hidden="true"></div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!--table with contacts-->
         <div id="contactTable" hx-get="/contactTable" hx-trigger="load" hx-swap="outerHTML">

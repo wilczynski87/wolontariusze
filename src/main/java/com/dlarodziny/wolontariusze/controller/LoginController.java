@@ -4,11 +4,16 @@ import com.dlarodziny.wolontariusze.model.Attitude;
 import com.dlarodziny.wolontariusze.service.ContactService;
 import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
@@ -57,12 +62,19 @@ public class LoginController {
     }
     
     @GetMapping("/user")
-    public Mono<Rendering> volunteerDashboard(final Model model, final WebSession session, Authentication authentication) {
+    public Mono<Rendering> volunteerDashboard(final Model model, final WebSession session, Authentication authentication,
+        @RequestParam(defaultValue = "0") int page, 
+        @RequestParam(defaultValue = "10") int size, 
+        @RequestParam(defaultValue = "id") String sort
+        ) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("user")
                         .modelAttribute("user", authentication.getName())
                         .modelAttribute("volunteer", volunteerDetailsService.getVolunteerDetailsByUsername(authentication.getName()))
-                        .modelAttribute("contacts", contactService.getAllContactsByUserName(authentication.getName()))
+                        .modelAttribute("contacts", contactService.getAllContactsByUserName(authentication.getName(), pageable))
                         .build());
     }
 

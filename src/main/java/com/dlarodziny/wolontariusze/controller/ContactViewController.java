@@ -6,16 +6,24 @@ import com.dlarodziny.wolontariusze.service.ContactService;
 import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
 
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Controller
 public class ContactViewController {
 
@@ -37,7 +45,12 @@ public class ContactViewController {
     }
 
     @PostMapping("/contactTable")
-    public Mono<Rendering> addToContactTable(final Model model, final WebSession session, final Authentication authentication, Contact contact) {
+    public Mono<Rendering> addToContactTable(final Model model, final WebSession session, final Authentication authentication, Contact contact, 
+        @RequestParam(defaultValue = "0") int page, 
+        @RequestParam(defaultValue = "10") int size, 
+        @RequestParam(defaultValue = "id") String sort
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         var adminRole = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         var savedContact = volunteerService.getVolunteerByUsername(authentication.getName())
                 .map(Volunteer::getId)
@@ -45,27 +58,36 @@ public class ContactViewController {
                     contact.setPatron(id);
                     return contactService.addContact(contact);
                 });
+
         return setRedirectAttributes(model, session)
                 .then(savedContact)
                 .thenReturn(Rendering.view("fragments/contactTable")
                         .modelAttribute("contacts", adminRole 
-                            ? contactService.getAllContacts()
-                            : contactService.getAllContactsByUserName(authentication.getName()))
+                            ? contactService.getAllContactsBy(pageable)
+                            : contactService.getAllContactsByUserName(authentication.getName(), pageable))
                         .modelAttribute("adminRole", adminRole)
                         .modelAttribute("patrons", volunteerDetailsService.getAllVolunteerDetails())
                         .build());
     }
 
     @GetMapping("/contactTable")
-    public Mono<Rendering> getContactTable(final Model model, final Authentication authentication) {
+    public Mono<Rendering> getContactTable(final Model model, final Authentication authentication, 
+        @RequestParam(defaultValue = "0") int page, 
+        @RequestParam(defaultValue = "10") int size, 
+        @RequestParam(defaultValue = "id") String sort
+        ) {
+
         var adminRole = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        
         return Mono.just(Rendering.view("fragments/contactTable")
             .modelAttribute("contacts", adminRole 
-                ? contactService.getAllContacts()
-                : contactService.getAllContactsByUserName(authentication.getName()))
+                ? contactService.getAllContactsBy(pageable)
+                : contactService.getAllContactsByUserName(authentication.getName(), pageable))
             .modelAttribute("adminRole", adminRole)
             .modelAttribute("patrons", volunteerDetailsService.getAllVolunteerDetails())
+            .modelAttribute("pagination", pageable)
             .build());
     }
 

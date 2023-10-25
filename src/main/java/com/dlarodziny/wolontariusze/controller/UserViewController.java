@@ -9,7 +9,6 @@ import com.dlarodziny.wolontariusze.service.VolunteerService;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Duration;
 import java.util.Arrays;
 
 import org.springframework.security.core.Authentication;
@@ -37,7 +36,6 @@ public class UserViewController {
 
     @GetMapping("/userDataForm")
     public Mono<Rendering> userDataForm(final Model model, final WebSession session, Authentication authentication) {
-//        System.out.println(authentication);
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("userDataForm :: userDataForm")
                         .modelAttribute("volunteer", volunteerService.getVolunteerByUsername(authentication.getName()))
@@ -50,7 +48,6 @@ public class UserViewController {
 
     @PostMapping("/saveUserData")
     public Mono<Rendering> saveUserDataForm(final Model model, final WebSession session, Authentication authentication) {
-//        System.out.println(authentication);
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("userDataForm :: userDataForm")
                         .modelAttribute("volunteer", volunteerService.getVolunteerByUsername(authentication.getName()))
@@ -99,10 +96,6 @@ public class UserViewController {
 
     @PostMapping("/saveUser")
     public Mono<Rendering> saveUserWithDetails(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
-        // volunteerService.addVolunteer(userWithDetails.getVolunteer())
-        //     .map(Volunteer::getId)
-        //     .subscribe(volunteerId -> volunteerDetailsService.addVolunteerDetails(volunteerId, userWithDetails.getVolunteerDetails()).subscribe())
-        //     ;
         return setRedirectAttributes(model, session)
             .thenReturn(Rendering.view("fragments/loader :: loader")
                 .modelAttribute("userSaved", volunteerService.addVolunteer(userWithDetails.getVolunteer())

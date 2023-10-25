@@ -1,7 +1,6 @@
 package com.dlarodziny.wolontariusze.controller;
 
 import com.dlarodziny.wolontariusze.model.Volunteer;
-import com.dlarodziny.wolontariusze.repository.VolunteerRepo;
 import com.dlarodziny.wolontariusze.service.VolunteerService;
 
 import org.springframework.security.core.Authentication;

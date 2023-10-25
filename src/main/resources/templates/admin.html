@@ -16,8 +16,7 @@
     <!-- My JS -->
     <script type="text/javascript" th:src="@{/scripts.js}" defer></script>
     <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!-- <script type="text/javascript" th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script> -->
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.7.1/jquery.min.js}" defer></script>
 
 </head>
 <body>
@@ -38,7 +37,7 @@
 
         <!--table with volunteers-->
         <div hx-get="/checkOnVolunteers"hx-on::before-request="$('.modal').modal('hide')" hx-trigger="userAdded from:body" hx-target="#volunteers"></div>
-        <div id="volunteers" class="collapse" th:insert="~{fragments/volunteers :: volunteers}"></div>
+        <div id="volunteers" class="collapse table-responsive" th:insert="~{fragments/volunteers :: volunteers}"></div>
 
         <!--Contact form-->
         <div id="contactForm" class="collapse" hx-get="/commentForm" hx-trigger="load" hx-swap="outerHTML">

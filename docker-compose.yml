@@ -1,11 +1,11 @@
-version: '3'
+version: '4'
 
 services:
   wolontariusze:
     image: 'wilczynski87/wolontariusze:latest'
     restart: always
     ports:
-      - "20327:20327"
+      - "327:327"
     build:
       context: .
     container_name: wolontariusze
@@ -15,9 +15,9 @@ services:
       - SPRING_DATASOURCE_URL=r2dbc:postgresql://dbwolontariusze:5432/wolontariusze
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-      - PORT=20327
+      - PORT=327
     healthcheck:
-      test: curl --fail http://localhost:20327 || exit 1
+      test: curl --fail http://localhost:327 || exit 1
       interval: 300s
       timeout: 10s
       retries: 3

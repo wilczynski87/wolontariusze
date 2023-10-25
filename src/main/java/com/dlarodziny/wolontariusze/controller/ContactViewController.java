@@ -55,17 +55,18 @@ public class ContactViewController {
                         .modelAttribute("patrons", volunteerDetailsService.getAllVolunteerDetails())
                         .build());
     }
+
     @GetMapping("/contactTable")
-    public Mono<Rendering> getContactTable(final Model model, final WebSession session, final Authentication authentication) {
+    public Mono<Rendering> getContactTable(final Model model, final Authentication authentication) {
         var adminRole = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        return setRedirectAttributes(model, session)
-                .thenReturn(Rendering.view("fragments/contactTable")
-                        .modelAttribute("contacts", adminRole 
-                            ? contactService.getAllContacts()
-                            : contactService.getAllContactsByUserName(authentication.getName()))
-                        .modelAttribute("adminRole", adminRole)
-                        .modelAttribute("patrons", volunteerDetailsService.getAllVolunteerDetails())
-                        .build());
+
+        return Mono.just(Rendering.view("fragments/contactTable")
+            .modelAttribute("contacts", adminRole 
+                ? contactService.getAllContacts()
+                : contactService.getAllContactsByUserName(authentication.getName()))
+            .modelAttribute("adminRole", adminRole)
+            .modelAttribute("patrons", volunteerDetailsService.getAllVolunteerDetails())
+            .build());
     }
 
     private Mono<Void> setRedirectAttributes(final Model model, final WebSession session) {

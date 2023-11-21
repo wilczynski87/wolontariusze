@@ -57,6 +57,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
 
                 .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers("/saveVolunteers", "/saveVolunteerDetails").permitAll()
                         .pathMatchers("/admin").hasAuthority("ROLE_ADMIN")
                         .anyExchange().authenticated()
                 )

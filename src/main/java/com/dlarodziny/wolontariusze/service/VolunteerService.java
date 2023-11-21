@@ -2,6 +2,9 @@ package com.dlarodziny.wolontariusze.service;
 
 import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.repository.VolunteerRepo;
+
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -26,7 +29,9 @@ public class VolunteerService {
     public Mono<Volunteer> addVolunteer(Volunteer volunteer) {
         return volunteerRepo.save(volunteer);
     }
-
+    public Flux<Volunteer> addVolunteers(List<Volunteer> volunteers) {
+        return volunteerRepo.saveAll(volunteers);
+    }
     public Mono<Volunteer> getVolunteerById(Long id) {
         return volunteerRepo.findById(id);
     }

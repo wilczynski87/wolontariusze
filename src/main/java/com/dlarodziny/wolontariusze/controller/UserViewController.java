@@ -83,7 +83,8 @@ public class UserViewController {
     }
 
     @GetMapping("/checkOnVolunteers")
-    public Mono<Rendering> checkOnVolunteers(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
+    // public Mono<Rendering> checkOnVolunteers(final Model model, final WebSession session, Authentication authentication, UserWithDetails userWithDetails) {
+    public Mono<Rendering> checkOnVolunteers(final Model model, final WebSession session, Authentication authentication) {
         return setRedirectAttributes(model, session)
                 .thenReturn(Rendering.view("fragments/volunteers :: volunteers")
                     .modelAttribute("volunteers", volunteerService.getAllVlounteers())

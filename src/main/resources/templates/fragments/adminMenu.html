@@ -38,6 +38,28 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a
+                            hx-get="/getVolunteers"
+                            hx-target="#modals-here"
+                            hx-trigger="click"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modals-here"
+                            class="nav-link">
+                            importuj wolontariuszy
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            hx-get="/getContacts"
+                            hx-target="#modals-here"
+                            hx-trigger="click"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modals-here"
+                            class="nav-link">
+                            importuj wpisy
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/logout">Wyloguj</a>
                     </li>
                 </ul>

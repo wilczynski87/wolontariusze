@@ -64,7 +64,7 @@ public class IEController {
             .modelAttribute("sev", "info")
             .build());
     }
-
+    // Recive Data
     @ResponseBody
     @PostMapping("/saveVolunteers")
     public Flux<Volunteer> saveVolunteers(@RequestBody List<Volunteer> volunteers, final Model model, Authentication auth) {
@@ -81,6 +81,15 @@ public class IEController {
         log.info("VolunteerDetails: {}", volunteerDetails);
 
         return volunteerDetailsService.saveVolunteerDetails(volunteerDetails);
+    }
+
+    @ResponseBody
+    @PostMapping("/saveContact")
+    public Mono<Contact> saveContact(@RequestBody Contact contact, final Model model, Authentication auth) {
+        log.info("\n\nsaveContact dotknięte!!!\n");
+        log.info("contact: {}", contact);
+
+        return contactService.addContact(contact);
     }
 
     // Export data

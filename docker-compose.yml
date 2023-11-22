@@ -36,24 +36,24 @@ services:
     volumes: 
       - dbwolontariusze:/var/lib/postgresql/data
   
-  # ie:
-  #   image: 'ie:latest'
-  #   restart: always
-  #   container_name: ie
-  #   depends_on:
-  #     - dbwolontariusze
-  #   environment:
-  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://dbwolontariusze:5432/wolontariusze
-  #     - SPRING_DATASOURCE_USERNAME=postgres
-  #     - SPRING_DATASOURCE_PASSWORD=postgres
-  #     - PORT=328
-  #   ports:
-  #     - "328:328"
-  #   healthcheck:
-  #     test: curl --fail http://localhost:327 || exit 1
-  #     interval: 300s
-  #     timeout: 10s
-  #     retries: 3
+  ie:
+    image: 'ie:latest'
+    restart: always
+    container_name: ie
+    depends_on:
+      - dbwolontariusze
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbwolontariusze:5432/wolontariusze
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - PORT=328
+    ports:
+      - "328:328"
+    healthcheck:
+      test: curl --fail http://localhost:327 || exit 1
+      interval: 300s
+      timeout: 10s
+      retries: 3
 
   pgbackups:
     container_name: Backup

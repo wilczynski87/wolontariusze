@@ -21,13 +21,6 @@ public class WolontariuszeApplication {
 		return initializer;
 	}
 
-	// public static void main(String[] args) {
-	// 	SpringApplication app = new SpringApplication(WolontariuszeApplication.class);
-	// 	app.setWebApplicationType(WebApplicationType.REACTIVE);
-	// 	app.run(args);
-	// 	System.out.println("\n\nWolontariuszeApplication is On!!!\n");
-	// }
-
 	public static void main(String[] args) {
 		SpringApplication.run(WolontariuszeApplication.class, args);
 

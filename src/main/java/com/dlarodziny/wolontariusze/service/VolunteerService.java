@@ -51,4 +51,13 @@ public class VolunteerService {
                 .flatMap(found -> volunteerRepo.save(volunteer))
                         .then(volunteerRepo.findById(volunteer.getId()));
     }
+
+    public void updateActiveStatus(Long id) {
+        volunteerRepo.findById(id).doOnNext(this::setStatusAndSave)
+            .subscribe();
+    }
+    private void setStatusAndSave(Volunteer v) {
+        v.setActive(false);
+        this.volunteerRepo.save(v).subscribe();
+    }
 }

@@ -3,6 +3,7 @@ package com.dlarodziny.wolontariusze.service;
 import com.dlarodziny.wolontariusze.model.VolunteerDetails;
 import com.dlarodziny.wolontariusze.repository.VolunteerDetailsRepo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ import reactor.core.publisher.Mono;
 @Service
 public class VolunteerDetailsService {
     private final VolunteerDetailsRepo volunteerDetailsRepo;
+    private final VolunteerService volunteerService;
 
-    public VolunteerDetailsService(VolunteerDetailsRepo volunteerDetailsRepo) {
+    public VolunteerDetailsService(VolunteerDetailsRepo volunteerDetailsRepo, VolunteerService volunteerService) {
         this.volunteerDetailsRepo = volunteerDetailsRepo;
+        this.volunteerService = volunteerService;
     }
 
     public Mono<VolunteerDetails> getVolunteerDetailsByPatron(Long patron) {
@@ -44,6 +47,7 @@ public class VolunteerDetailsService {
                     volunteerDetails.setId(old.getId());
                     volunteerDetails.setPatron(old.getPatron());
                     volunteerDetails.setStarted(old.getStarted());
+                    if(volunteerDetails.getEnded().isBefore(LocalDate.now())) volunteerService.updateActiveStatus(volunteerDetails.getPatron());
                     return volunteerDetails;
                 })
                 .flatMap(volunteerDetailsRepo::save);

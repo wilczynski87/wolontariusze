@@ -34,12 +34,12 @@
                 data-bs-target="#modals-volunteer">
                 <td th:text="${volunteer.id}"></td>
                 <td th:text="${volunteer.username}"></td>
-                <td th:text="${volunteer.readRole()}"></td>
+                <td th:class="${volunteer.active ? '' : 'erasure'}" th:text="${volunteer.readRole()}"></td>
                 <th:block th:if="${volunteer.getVolunteerDetails(volunteersDetails)}" 
                     th:object="${volunteer.getVolunteerDetails(volunteersDetails)}">
                     <td th:text="*{patron}"></td>
-                    <td th:text="*{name}"></td>
-                    <td th:text="*{surname}"></td>
+                    <td th:class="${volunteer.active ? '' : 'erasure'}" th:text="*{name}"></td>
+                    <td th:class="${volunteer.active ? '' : 'erasure'}" th:text="*{surname}"></td>
                     <td th:text="*{dob}"></td>
                     <td th:text="*{started}"></td>
                     <td th:text="*{ended}"></td>

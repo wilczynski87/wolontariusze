@@ -4,3 +4,7 @@
 #commentForm {
     transition: opacity 300ms ease-in;
 }
+.erasure {
+    text-decoration-line: line-through;
+    color: red;
+}

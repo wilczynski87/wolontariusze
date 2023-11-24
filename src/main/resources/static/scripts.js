@@ -49,3 +49,9 @@ const validatorAddContact = (e) => {
     if(form.checkValidity()) htmx.trigger("#addContactForm", "sendContactForm");
     return false;
 }
+
+const closeModalById = (id) => {
+    const myModal = document.getElementById(id);
+    const modal = bootstrap.Modal.getInstance(myModal);
+    modal.hide();
+}

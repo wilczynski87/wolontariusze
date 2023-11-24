@@ -7,11 +7,11 @@ public class UserWithDetails extends VolunteerDetails {
     private Long id;
     private String username;
     private String password;
-    private String role = Role.USER.getRoleDesc();
+    private String role;
     private boolean active = true;
 
     public Volunteer getVolunteer() {
-        return new Volunteer(this.id, this.username, this.password, this.role == null ? "USER" : this.role, this.active);
+        return new Volunteer(this.id, this.username, this.password, this.role == null ? "USER" : Role.valueOf(this.role).getSecurityRole(), this.active);
     }
 
     public void breakVolunteer(Volunteer volunteer) {

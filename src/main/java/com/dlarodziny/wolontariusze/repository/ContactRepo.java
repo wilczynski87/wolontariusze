@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import reactor.core.publisher.Flux;
+import java.util.List;
+
 
 public interface ContactRepo extends R2dbcRepository<Contact, Long> {
     Flux<Contact> findAllBy(Example<Contact> example);
@@ -21,7 +23,7 @@ public interface ContactRepo extends R2dbcRepository<Contact, Long> {
 
     Flux<Contact> findAllBy(Pageable pageable);
 
-    // Flux<Contact> findAllbyPatronAndPagable(String username, Pageable pageable);
-
+    @Query("SELECT * from contact c WHERE c.contact_name LIKE :1")
+    Flux<Contact> findAllByContainContactName(Pageable pageable, String contactName);
 
 }

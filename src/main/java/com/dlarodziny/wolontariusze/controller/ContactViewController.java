@@ -1,6 +1,7 @@
 package com.dlarodziny.wolontariusze.controller;
 
 import com.dlarodziny.wolontariusze.model.Contact;
+import com.dlarodziny.wolontariusze.model.DIRECTION;
 import com.dlarodziny.wolontariusze.model.Volunteer;
 import com.dlarodziny.wolontariusze.service.ContactService;
 import com.dlarodziny.wolontariusze.service.VolunteerDetailsService;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -74,12 +76,13 @@ public class ContactViewController {
     public Mono<Rendering> getContactTable(final Model model, final Authentication authentication, 
         @RequestParam(defaultValue = "0") int page, 
         @RequestParam(defaultValue = "10") int size, 
-        @RequestParam(defaultValue = "id") String sort
+        @RequestParam(defaultValue = "id") String sort,
+        @RequestParam(defaultValue = "DESC") DIRECTION direction
         ) {
-
+            System.out.println(direction);
         var adminRole = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.valueOf(direction.name()), sort));
         
         return Mono.just(Rendering.view("fragments/contactTable")
             .modelAttribute("contacts", adminRole 
@@ -88,6 +91,29 @@ public class ContactViewController {
             .modelAttribute("adminRole", adminRole)
             .modelAttribute("patrons", volunteerDetailsService.getAllVolunteerDetails())
             .modelAttribute("pagination", pageable)
+            .modelAttribute("direction", direction.equals(DIRECTION.ASC) ? DIRECTION.DESC : DIRECTION.ASC)
+            .build());
+    }
+    @GetMapping("/contactTableByContactName")
+    public Mono<Rendering> getContactTableByContactName(final Model model, final Authentication authentication, 
+        @RequestParam(defaultValue = "0") int page, 
+        @RequestParam(defaultValue = "10") int size, 
+        @RequestParam(defaultValue = "id") String sort,
+        @RequestParam(defaultValue = "DESC") DIRECTION direction,
+        @RequestParam(defaultValue = "") String contactName
+        ) {
+        var adminRole = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.valueOf(direction.name()), sort));
+        
+        return Mono.just(Rendering.view("fragments/contactTable")
+            .modelAttribute("contacts", adminRole 
+                ? contactService.getAllContactsByAndContactName(pageable, contactName)
+                : contactService.getAllContactsByUserName(authentication.getName(), pageable))
+            .modelAttribute("adminRole", adminRole)
+            .modelAttribute("patrons", volunteerDetailsService.getAllVolunteerDetails())
+            .modelAttribute("pagination", pageable)
+            .modelAttribute("direction", direction.equals(DIRECTION.ASC) ? DIRECTION.DESC : DIRECTION.ASC)
             .build());
     }
 

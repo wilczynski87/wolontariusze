@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class ContactService {
     private final ContactRepo contactRepo;
 
-    public ContactService(ContactRepo contactRepo, VolunteerRepo volunteerRepo) {
+    public ContactService(ContactRepo contactRepo) {
         this.contactRepo = contactRepo;
     }
 
@@ -43,6 +45,14 @@ public class ContactService {
         final int currentPage = pageable.getPageNumber(); 
 
         return contactRepo.findAllBy(pageable).collectList().zipWith(this.contactRepo.count())
+                              .map(i -> new PageImpl<>(i.getT1(), PageRequest.of(currentPage, pageSize), i.getT2()));
+    }
+
+    public Mono<Page<Contact>> getAllContactsByAndContactName(final Pageable pageable, final String contactName) {
+        final int pageSize = pageable.getPageSize();
+        final int currentPage = pageable.getPageNumber(); 
+
+        return contactRepo.findAllByContainContactName(pageable, String.format("%s%s%s", "%", contactName, "%")).collectList().zipWith(this.contactRepo.findAllByContainContactName(pageable, contactName).count())
                               .map(i -> new PageImpl<>(i.getT1(), PageRequest.of(currentPage, pageSize), i.getT2()));
     }
 }

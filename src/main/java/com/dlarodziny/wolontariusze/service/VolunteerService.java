@@ -38,6 +38,9 @@ public class VolunteerService {
     public Mono<Volunteer> getVolunteerByUsername(String username){ 
         return volunteerRepo.findByUsername(username);
     }
+    public Mono<Long> getVolunteerIdByUsername(String username){ 
+        return volunteerRepo.findByUsername(username).flatMap(x -> Mono.just(x.getId()));
+    }
     public Mono<Boolean> isVolunteerSaved(String username){ 
         return volunteerRepo.findByUsername(username).hasElement();
     }

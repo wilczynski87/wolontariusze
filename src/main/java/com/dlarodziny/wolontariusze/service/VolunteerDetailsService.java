@@ -4,6 +4,7 @@ import com.dlarodziny.wolontariusze.model.VolunteerDetails;
 import com.dlarodziny.wolontariusze.repository.VolunteerDetailsRepo;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;

@@ -55,3 +55,16 @@ const closeModalById = (id) => {
     const modal = bootstrap.Modal.getInstance(myModal);
     modal.hide();
 }
+
+const ascDesc = (identyfier) => {
+    const element = document.querySelector(`#${identyfier}`);
+    if(element.value === `ASC`) element.value = `DESC`
+    else element.value = `ASC`;
+    htmx.trigger(`#tableHeaderForm`, `changed`);
+}
+
+const choosenPatron = (inputId, volunteerId) => {
+    return document.getElementById(inputId) === null 
+        ? volunteerId
+        : document.getElementById(inputId).value;
+}
